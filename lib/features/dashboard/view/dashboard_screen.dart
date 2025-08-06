@@ -41,9 +41,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
             // --- 4. AI 코치 인사이트 ---
-            SliverToBoxAdapter(
-              child: _buildSectionHeader(title: 'AI 코치 인사이트 ✨'),
-            ),
+            SliverToBoxAdapter(child: _buildSectionHeader(title: 'AI 코치 인사이트')),
             SliverToBoxAdapter(child: _buildAiInsightCard()),
 
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -211,17 +209,57 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: _accentColor.withOpacity(0.05),
+          color: _surfaceColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _accentColor.withOpacity(0.2), width: 1),
+          border: Border.all(color: _borderColor, width: 1),
         ),
-        child: Text(
-          "Your win rate with the '#Breakout' strategy is 78%. Keep capitalizing on this pattern.",
-          style: GoogleFonts.montserrat(
-            color: _secondaryTextColor.withOpacity(0.9),
-            fontSize: 14,
-            height: 1.5,
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  Icons.psychology_outlined,
+                  color: _accentColor,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  "오늘의 코칭",
+                  style: GoogleFonts.montserrat(
+                    color: _accentColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "Your win rate with the '#Breakout' strategy is 78%. Keep capitalizing on this pattern.",
+              style: GoogleFonts.montserrat(
+                color: _secondaryTextColor.withOpacity(0.9),
+                fontSize: 14,
+                height: 1.6,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  // TODO: 더 많은 인사이트 보기 기능
+                },
+                child: Text(
+                  "더 알아보기",
+                  style: GoogleFonts.montserrat(
+                    color: _accentColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
