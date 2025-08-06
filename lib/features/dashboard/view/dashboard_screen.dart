@@ -41,7 +41,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
             // --- 4. AI 코치 인사이트 ---
-            SliverToBoxAdapter(child: _buildSectionHeader(title: 'AI 코치 인사이트')),
+            SliverToBoxAdapter(
+              child: _buildSectionHeader(title: 'AI Coach Insight'),
+            ),
             SliverToBoxAdapter(child: _buildAiInsightCard()),
 
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -49,8 +51,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             // --- 5. 최근 매매 기록 ---
             SliverToBoxAdapter(
               child: _buildSectionHeader(
-                title: '최근 매매 기록',
-                actionText: '전체보기',
+                title: 'Recent Trades',
+                actionText: 'View All',
                 onActionTap: () {
                   // TODO: 전체 히스토리로 이동
                 },
@@ -128,7 +130,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '총 손익 (Net P/L)',
+              'Net P/L',
               style: GoogleFonts.montserrat(
                 color: _secondaryTextColor,
                 fontSize: 14,
@@ -153,16 +155,25 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       child: GridView.count(
-        crossAxisCount: 3,
+        crossAxisCount: 2, // 3개에서 2개로 변경하여 2x2 그리드 구성
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        childAspectRatio: 1.2,
+        childAspectRatio: 1.5, // 카드 비율 조정
         children: [
-          _MetricItem(title: '승률', value: '62.5%'),
-          _MetricItem(title: '손익비', value: '2.8:1'),
-          _MetricItem(title: '평균 손익', value: '+\$89.8', isPositive: true),
+          _MetricItem(title: 'Win Rate', value: '62.5%'),
+          _MetricItem(title: 'Avg. P/L', value: '+\$89.8', isPositive: true),
+          _MetricItem(
+            title: 'Largest Win',
+            value: '+\$450.2',
+            isPositive: true,
+          ),
+          _MetricItem(
+            title: 'Largest Loss',
+            value: '-\$120.5',
+            isPositive: false,
+          ), // 최대 손실 카드 추가
         ],
       ),
     );
@@ -225,7 +236,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  "오늘의 코칭",
+                  "Today's Coaching",
                   style: GoogleFonts.montserrat(
                     color: _accentColor,
                     fontSize: 14,
@@ -251,7 +262,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   // TODO: 더 많은 인사이트 보기 기능
                 },
                 child: Text(
-                  "더 알아보기",
+                  "Learn More",
                   style: GoogleFonts.montserrat(
                     color: _accentColor,
                     fontWeight: FontWeight.w600,
