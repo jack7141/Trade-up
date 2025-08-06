@@ -3,11 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
 
-// --- 데이터 모델 (임시) ---
+// --- 데이터 모델 (개선) ---
 class Execution {
   final double price;
   final double quantity;
-  Execution({required this.price, required this.quantity});
+  final DateTime timestamp;
+  final bool isEntry;
+  final PositionSide side;
+
+  Execution({
+    required this.price,
+    required this.quantity,
+    required this.timestamp,
+    required this.isEntry,
+    required this.side,
+  });
+
+  double get value => price * quantity;
+
+  String get typeText {
+    if (isEntry) {
+      return side == PositionSide.long ? 'Buy/Long' : 'Sell/Short';
+    } else {
+      return side == PositionSide.long ? 'Sell/Exit' : 'Buy/Exit';
+    }
+  }
+
+  Color get typeColor {
+    if (isEntry) {
+      return side == PositionSide.long
+          ? AppTheme.positiveColor
+          : AppTheme.negativeColor;
+    } else {
+      return side == PositionSide.long
+          ? AppTheme.negativeColor
+          : AppTheme.positiveColor;
+    }
+  }
 }
 
 enum PositionSide { long, short }
@@ -34,8 +66,7 @@ class _NewTradeScreenState extends State<NewTradeScreen>
   final String _selectedAsset = 'BTC/USDT';
   PositionSide _positionSide = PositionSide.long;
 
-  final List<Execution> _entries = [];
-  final List<Execution> _exits = [];
+  final List<Execution> _executions = [];
 
   @override
   void initState() {
@@ -52,9 +83,13 @@ class _NewTradeScreenState extends State<NewTradeScreen>
     _priceController.addListener(_updateOrderValue);
     _quantityController.addListener(_updateOrderValue);
 
-    // 애니메이션 시작
-    _animationController.forward();
-    _slideController.forward();
+    // 애니메이션을 첫 번째 프레임 렌더링 후에 시작
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _animationController.forward();
+        _slideController.forward();
+      }
+    });
   }
 
   void _updateOrderValue() {
@@ -67,18 +102,30 @@ class _NewTradeScreenState extends State<NewTradeScreen>
   void _addExecution({required bool isEntry}) {
     final price = double.tryParse(_priceController.text);
     final quantity = double.tryParse(_quantityController.text);
-    if (price != null && quantity != null) {
+    if (price != null && quantity != null && price > 0 && quantity > 0) {
       setState(() {
-        final newExecution = Execution(price: price, quantity: quantity);
-        if (isEntry) {
-          _entries.add(newExecution);
-        } else {
-          _exits.add(newExecution);
-        }
+        final newExecution = Execution(
+          price: price,
+          quantity: quantity,
+          timestamp: DateTime.now(),
+          isEntry: isEntry,
+          side: _positionSide,
+        );
+        _executions.add(newExecution);
         _priceController.clear();
         _quantityController.clear();
       });
     }
+  }
+
+  // 포지션 계산을 위한 헬퍼 메서드들
+  List<Execution> get _entries => _executions.where((e) => e.isEntry).toList();
+  List<Execution> get _exits => _executions.where((e) => !e.isEntry).toList();
+
+  double get _positionProgress {
+    final entryQty = _entries.fold<double>(0, (sum, e) => sum + e.quantity);
+    final exitQty = _exits.fold<double>(0, (sum, e) => sum + e.quantity);
+    return entryQty > 0 ? (exitQty / entryQty).clamp(0.0, 1.0) : 0.0;
   }
 
   @override
@@ -159,6 +206,106 @@ class _NewTradeScreenState extends State<NewTradeScreen>
       body: AnimatedBuilder(
         animation: _slideController,
         builder: (context, child) {
+          // 애니메이션 컨트롤러가 준비되지 않은 경우 기본 UI 반환
+          if (!_slideController.isAnimating && _slideController.value == 0.0) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              child: Column(
+                children: [
+                  _buildAssetSelector(screenWidth),
+                  SizedBox(
+                    height: math.max(16.0, math.min(20.0, screenWidth * 0.04)),
+                  ),
+                  Expanded(
+                    child: screenWidth > 1200
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: _buildOrderPanel(
+                                  screenWidth,
+                                  cardPadding,
+                                  isLong,
+                                ),
+                              ),
+                              SizedBox(width: horizontalPadding),
+                              Expanded(
+                                flex: 3,
+                                child: _buildPositionStatus(
+                                  screenWidth,
+                                  cardPadding,
+                                ),
+                              ),
+                              SizedBox(width: horizontalPadding),
+                              Expanded(
+                                flex: 4,
+                                child: _buildTradeHistory(
+                                  screenWidth,
+                                  cardPadding,
+                                ),
+                              ),
+                            ],
+                          )
+                        : screenWidth > 800
+                        ? Column(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 5,
+                                      child: _buildOrderPanel(
+                                        screenWidth,
+                                        cardPadding,
+                                        isLong,
+                                      ),
+                                    ),
+                                    SizedBox(width: horizontalPadding),
+                                    Expanded(
+                                      flex: 4,
+                                      child: _buildPositionStatus(
+                                        screenWidth,
+                                        cardPadding,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: horizontalPadding),
+                              Expanded(
+                                flex: 2,
+                                child: _buildTradeHistory(
+                                  screenWidth,
+                                  cardPadding,
+                                ),
+                              ),
+                            ],
+                          )
+                        : SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                _buildOrderPanel(
+                                  screenWidth,
+                                  cardPadding,
+                                  isLong,
+                                ),
+                                SizedBox(height: horizontalPadding),
+                                _buildPositionStatus(screenWidth, cardPadding),
+                                SizedBox(height: horizontalPadding),
+                                _buildTradeHistory(screenWidth, cardPadding),
+                              ],
+                            ),
+                          ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // 정상적인 애니메이션 UI
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Column(
@@ -180,13 +327,13 @@ class _NewTradeScreenState extends State<NewTradeScreen>
                   height: math.max(16.0, math.min(20.0, screenWidth * 0.04)),
                 ),
                 Expanded(
-                  child: screenWidth > 800
+                  child: screenWidth > 1200
                       ? Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // 데스크톱: 좌우 분할
+                            // 대형 데스크톱: 3분할 레이아웃
                             Expanded(
-                              flex: 5,
+                              flex: 3,
                               child: SlideTransition(
                                 position:
                                     Tween<Offset>(
@@ -207,6 +354,26 @@ class _NewTradeScreenState extends State<NewTradeScreen>
                             ),
                             SizedBox(width: horizontalPadding),
                             Expanded(
+                              flex: 3,
+                              child: SlideTransition(
+                                position:
+                                    Tween<Offset>(
+                                      begin: const Offset(0, 0.5),
+                                      end: Offset.zero,
+                                    ).animate(
+                                      CurvedAnimation(
+                                        parent: _slideController,
+                                        curve: Curves.easeOutCubic,
+                                      ),
+                                    ),
+                                child: _buildPositionStatus(
+                                  screenWidth,
+                                  cardPadding,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: horizontalPadding),
+                            Expanded(
                               flex: 4,
                               child: SlideTransition(
                                 position:
@@ -219,10 +386,48 @@ class _NewTradeScreenState extends State<NewTradeScreen>
                                         curve: Curves.easeOutCubic,
                                       ),
                                     ),
-                                child: _buildPositionStatus(
+                                child: _buildTradeHistory(
                                   screenWidth,
                                   cardPadding,
                                 ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : screenWidth > 800
+                      ? Column(
+                          children: [
+                            // 태블릿: 위쪽 주문창 + 포지션, 아래쪽 거래내역
+                            Expanded(
+                              flex: 3,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: _buildOrderPanel(
+                                      screenWidth,
+                                      cardPadding,
+                                      isLong,
+                                    ),
+                                  ),
+                                  SizedBox(width: horizontalPadding),
+                                  Expanded(
+                                    flex: 4,
+                                    child: _buildPositionStatus(
+                                      screenWidth,
+                                      cardPadding,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: horizontalPadding),
+                            Expanded(
+                              flex: 2,
+                              child: _buildTradeHistory(
+                                screenWidth,
+                                cardPadding,
                               ),
                             ),
                           ],
@@ -238,6 +443,8 @@ class _NewTradeScreenState extends State<NewTradeScreen>
                               ),
                               SizedBox(height: horizontalPadding),
                               _buildPositionStatus(screenWidth, cardPadding),
+                              SizedBox(height: horizontalPadding),
+                              _buildTradeHistory(screenWidth, cardPadding),
                             ],
                           ),
                         ),
@@ -755,7 +962,17 @@ class _NewTradeScreenState extends State<NewTradeScreen>
           Container(
             padding: EdgeInsets.all(cardPadding * 0.8),
             decoration: BoxDecoration(
-              color: AppTheme.backgroundColor.withOpacity(0.5),
+              gradient: LinearGradient(
+                colors: [
+                  (realizedPnL >= 0
+                          ? AppTheme.positiveColor
+                          : AppTheme.negativeColor)
+                      .withOpacity(0.05),
+                  AppTheme.backgroundColor.withOpacity(0.3),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: realizedPnL >= 0
@@ -766,6 +983,16 @@ class _NewTradeScreenState extends State<NewTradeScreen>
             ),
             child: Column(
               children: [
+                // 포지션 상태 시각화
+                if (entryQty > 0) ...[
+                  _buildPositionVisualization(
+                    entryQty,
+                    exitQty,
+                    screenWidth,
+                    cardPadding,
+                  ),
+                  SizedBox(height: cardPadding * 0.8),
+                ],
                 _buildStatusRow(
                   'Remaining Qty',
                   '${remainingQty.toStringAsFixed(4)} BTC',
@@ -781,8 +1008,198 @@ class _NewTradeScreenState extends State<NewTradeScreen>
                       ? AppTheme.positiveColor
                       : AppTheme.negativeColor,
                 ),
+                // PnL 퍼센티지 표시
+                if (entryValue > 0)
+                  _buildStatusRow(
+                    'P&L %',
+                    '${realizedPnL >= 0 ? '+' : ''}${((realizedPnL / entryValue) * 100).toStringAsFixed(2)}%',
+                    screenWidth,
+                    isHighlight: true,
+                    color: realizedPnL >= 0
+                        ? AppTheme.positiveColor
+                        : AppTheme.negativeColor,
+                  ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPositionVisualization(
+    double entryQty,
+    double exitQty,
+    double screenWidth,
+    double cardPadding,
+  ) {
+    final progress = entryQty > 0 ? (exitQty / entryQty).clamp(0.0, 1.0) : 0.0;
+    final remaining = entryQty - exitQty;
+
+    return Container(
+      padding: EdgeInsets.all(cardPadding * 0.6),
+      decoration: BoxDecoration(
+        color: AppTheme.backgroundColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: [
+          // 시각적 표현 - 동그란 진행률
+          Row(
+            children: [
+              // 원형 진행률 인디케이터
+              SizedBox(
+                width: math.max(60.0, math.min(80.0, screenWidth * 0.08)),
+                height: math.max(60.0, math.min(80.0, screenWidth * 0.08)),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // 배경 원
+                    CircularProgressIndicator(
+                      value: 1.0,
+                      strokeWidth: 6,
+                      backgroundColor: AppTheme.borderColor,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppTheme.borderColor,
+                      ),
+                    ),
+                    // 진행률 원
+                    CircularProgressIndicator(
+                      value: progress,
+                      strokeWidth: 6,
+                      backgroundColor: Colors.transparent,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        progress >= 1.0
+                            ? AppTheme.accentColor
+                            : AppTheme.negativeColor,
+                      ),
+                    ),
+                    // 중앙 텍스트
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${(progress * 100).toInt()}%',
+                          style: GoogleFonts.robotoMono(
+                            color: AppTheme.primaryText,
+                            fontSize: math.max(
+                              12.0,
+                              math.min(16.0, screenWidth * 0.035),
+                            ),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Closed',
+                          style: GoogleFonts.montserrat(
+                            color: AppTheme.secondaryText,
+                            fontSize: math.max(
+                              8.0,
+                              math.min(10.0, screenWidth * 0.022),
+                            ),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(width: cardPadding * 0.8),
+
+              // 세부 정보
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 진입량 표시
+                    Row(
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: AppTheme.positiveColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        SizedBox(width: cardPadding * 0.3),
+                        Text(
+                          'Entry: ${entryQty.toStringAsFixed(4)} BTC',
+                          style: GoogleFonts.robotoMono(
+                            color: AppTheme.primaryText,
+                            fontSize: math.max(
+                              11.0,
+                              math.min(13.0, screenWidth * 0.03),
+                            ),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: cardPadding * 0.2),
+
+                    // 청산량 표시
+                    Row(
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: AppTheme.negativeColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        SizedBox(width: cardPadding * 0.3),
+                        Text(
+                          'Exit: ${exitQty.toStringAsFixed(4)} BTC',
+                          style: GoogleFonts.robotoMono(
+                            color: AppTheme.primaryText,
+                            fontSize: math.max(
+                              11.0,
+                              math.min(13.0, screenWidth * 0.03),
+                            ),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: cardPadding * 0.2),
+
+                    // 잔여량 표시
+                    Row(
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: remaining > 0
+                                ? AppTheme.accentColor
+                                : AppTheme.secondaryText,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        SizedBox(width: cardPadding * 0.3),
+                        Text(
+                          'Open: ${remaining.toStringAsFixed(4)} BTC',
+                          style: GoogleFonts.robotoMono(
+                            color: remaining > 0
+                                ? AppTheme.primaryText
+                                : AppTheme.secondaryText,
+                            fontSize: math.max(
+                              11.0,
+                              math.min(13.0, screenWidth * 0.03),
+                            ),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -867,6 +1284,378 @@ class _NewTradeScreenState extends State<NewTradeScreen>
               ),
               textAlign: TextAlign.end,
               overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTradeHistory(double screenWidth, double cardPadding) {
+    final sortedExecutions = List<Execution>.from(_executions)
+      ..sort((a, b) => b.timestamp.compareTo(a.timestamp)); // 최신순 정렬
+
+    return Container(
+      padding: EdgeInsets.all(cardPadding),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.borderColor, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.backgroundColor.withOpacity(0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 헤더 영역
+          Row(
+            children: [
+              Icon(
+                Icons.history,
+                color: AppTheme.accentColor,
+                size: math.max(18.0, math.min(24.0, screenWidth * 0.05)),
+              ),
+              SizedBox(width: cardPadding * 0.5),
+              Text(
+                'Trade History',
+                style: GoogleFonts.montserrat(
+                  color: AppTheme.primaryText,
+                  fontWeight: FontWeight.bold,
+                  fontSize: math.max(16.0, math.min(20.0, screenWidth * 0.045)),
+                ),
+              ),
+              const Spacer(),
+              _buildPositionProgressIndicator(screenWidth),
+            ],
+          ),
+
+          Divider(color: AppTheme.borderColor, height: cardPadding * 1.5),
+
+          // 포지션 진행률 바
+          if (_entries.isNotEmpty) ...[
+            _buildPositionProgressBar(screenWidth, cardPadding),
+            SizedBox(height: cardPadding),
+          ],
+
+          // 거래 내역 테이블
+          _executions.isEmpty
+              ? _buildEmptyState(screenWidth)
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // 테이블 헤더
+                    _buildTradeHistoryHeader(screenWidth),
+                    SizedBox(height: cardPadding * 0.5),
+
+                    // 거래 내역 리스트
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: sortedExecutions.length,
+                      itemBuilder: (context, index) {
+                        final execution = sortedExecutions[index];
+                        return _buildTradeHistoryRow(
+                          execution,
+                          screenWidth,
+                          cardPadding,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPositionProgressIndicator(double screenWidth) {
+    if (_entries.isEmpty) return const SizedBox.shrink();
+
+    final progress = _positionProgress;
+    final progressColor = progress >= 1.0
+        ? AppTheme.accentColor
+        : progress > 0.7
+        ? AppTheme.negativeColor.withOpacity(0.8)
+        : AppTheme.positiveColor;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: progressColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: progressColor.withOpacity(0.3)),
+      ),
+      child: Text(
+        '${(progress * 100).toStringAsFixed(0)}% Closed',
+        style: GoogleFonts.robotoMono(
+          color: progressColor,
+          fontSize: math.max(10.0, math.min(12.0, screenWidth * 0.025)),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPositionProgressBar(double screenWidth, double cardPadding) {
+    final progress = _positionProgress;
+    final entryQty = _entries.fold<double>(0, (sum, e) => sum + e.quantity);
+    final exitQty = _exits.fold<double>(0, (sum, e) => sum + e.quantity);
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Position Progress',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText,
+                fontSize: math.max(12.0, math.min(14.0, screenWidth * 0.03)),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              '${exitQty.toStringAsFixed(2)} / ${entryQty.toStringAsFixed(2)} BTC',
+              style: GoogleFonts.robotoMono(
+                color: AppTheme.primaryText,
+                fontSize: math.max(12.0, math.min(14.0, screenWidth * 0.03)),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: cardPadding * 0.3),
+        Container(
+          height: 8,
+          decoration: BoxDecoration(
+            color: AppTheme.backgroundColor,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: progress,
+              backgroundColor: Colors.transparent,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                progress >= 1.0 ? AppTheme.accentColor : AppTheme.positiveColor,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyState(double screenWidth) {
+    return SizedBox(
+      height: math.max(200.0, math.min(300.0, screenWidth * 0.4)),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.timeline,
+              size: math.max(40.0, math.min(60.0, screenWidth * 0.1)),
+              color: AppTheme.secondaryText.withOpacity(0.5),
+            ),
+            SizedBox(
+              height: math.max(12.0, math.min(16.0, screenWidth * 0.03)),
+            ),
+            Text(
+              'No trades yet',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText,
+                fontSize: math.max(14.0, math.min(18.0, screenWidth * 0.04)),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: math.max(6.0, math.min(8.0, screenWidth * 0.02))),
+            Text(
+              'Start trading to see your history',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText.withOpacity(0.7),
+                fontSize: math.max(12.0, math.min(14.0, screenWidth * 0.03)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTradeHistoryHeader(double screenWidth) {
+    final fontSize = math.max(11.0, math.min(13.0, screenWidth * 0.028));
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: math.max(6.0, math.min(8.0, screenWidth * 0.02)),
+        horizontal: math.max(8.0, math.min(12.0, screenWidth * 0.025)),
+      ),
+      decoration: BoxDecoration(
+        color: AppTheme.backgroundColor.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Time',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Type',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Price',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Qty',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Value',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTradeHistoryRow(
+    Execution execution,
+    double screenWidth,
+    double cardPadding,
+  ) {
+    final fontSize = math.max(11.0, math.min(13.0, screenWidth * 0.028));
+    final timeFormat =
+        '${execution.timestamp.hour.toString().padLeft(2, '0')}:${execution.timestamp.minute.toString().padLeft(2, '0')}';
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom: math.max(4.0, math.min(6.0, screenWidth * 0.01)),
+      ),
+      padding: EdgeInsets.symmetric(
+        vertical: math.max(8.0, math.min(10.0, screenWidth * 0.02)),
+        horizontal: math.max(8.0, math.min(12.0, screenWidth * 0.025)),
+      ),
+      decoration: BoxDecoration(
+        color: execution.typeColor.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: execution.typeColor.withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              timeFormat,
+              style: GoogleFonts.robotoMono(
+                color: AppTheme.primaryText.withOpacity(0.8),
+                fontSize: fontSize,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: execution.typeColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                execution.isEntry ? 'Entry' : 'Exit',
+                style: GoogleFonts.montserrat(
+                  color: execution.typeColor,
+                  fontSize: fontSize * 0.9,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              '\$${execution.price.toStringAsFixed(2)}',
+              style: GoogleFonts.robotoMono(
+                color: AppTheme.primaryText,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              execution.quantity.toStringAsFixed(4),
+              style: GoogleFonts.robotoMono(
+                color: AppTheme.primaryText,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              '\$${execution.value.toStringAsFixed(2)}',
+              style: GoogleFonts.robotoMono(
+                color: AppTheme.primaryText,
+                fontSize: fontSize,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.right,
             ),
           ),
         ],
