@@ -36,20 +36,20 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
             // --- 4. 거래 활동 (Trading Activity) ---
             SliverToBoxAdapter(child: TradingActivityWidget()),
-
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-            // --- 5. AI 코치 인사이트 ---
-            SliverToBoxAdapter(
-              child: _buildSectionHeader(title: 'AI Coach Insight'),
-            ),
-            SliverToBoxAdapter(child: _buildAiInsightCard()),
-
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            // --- 5. 거래 도구(Kelly Simulator) ---
             SliverToBoxAdapter(
               child: _buildSectionHeader(title: 'Trading Tools'),
             ),
             SliverToBoxAdapter(child: _buildTradingTools()),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+            // --- 6. AI 코치 인사이트 ---
+            SliverToBoxAdapter(
+              child: _buildSectionHeader(title: 'AI Coach Insight'),
+            ),
+            SliverToBoxAdapter(child: _buildAiInsightCard()),
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
             // --- 6. 최근 매매 기록 ---
@@ -63,7 +63,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
             ),
             SliverToBoxAdapter(child: RecentTradeWidget()),
-
             const SliverToBoxAdapter(child: SizedBox(height: 100)), // 하단 여백
           ],
         ),
