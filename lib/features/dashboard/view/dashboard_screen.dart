@@ -46,6 +46,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             SliverToBoxAdapter(child: _buildAiInsightCard()),
 
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            SliverToBoxAdapter(
+              child: _buildSectionHeader(title: 'Trading Tools'),
+            ),
+            SliverToBoxAdapter(child: _buildTradingTools()),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
             // --- 6. 최근 매매 기록 ---
             SliverToBoxAdapter(
@@ -150,6 +155,102 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTradingTools() {
+    // 임시 데이터. 실제로는 ViewModel에서 가져와야 합니다.
+    const double kellyPercentage = 18.4;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: GestureDetector(
+        // onTap: () => _navigateTo(AppScreen.kellySimulator),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppTheme.accentColor.withOpacity(0.1),
+                AppTheme.surfaceColor,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppTheme.borderColor, width: 1),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.accentColor.withOpacity(0.05),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.accentColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.insights,
+                  color: AppTheme.accentColor,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Position Sizing',
+                      style: GoogleFonts.montserrat(
+                        color: AppTheme.primaryText,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Find your optimal risk per trade.',
+                      style: GoogleFonts.montserrat(
+                        color: AppTheme.secondaryText,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'Optimal Risk',
+                    style: GoogleFonts.montserrat(
+                      color: AppTheme.secondaryText,
+                      fontSize: 10,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${kellyPercentage.toStringAsFixed(1)}%',
+                    style: GoogleFonts.bebasNeue(
+                      color: AppTheme.accentColor,
+                      fontSize: 22,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
