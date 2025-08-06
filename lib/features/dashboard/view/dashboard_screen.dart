@@ -147,7 +147,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               children: [
                 Text(
                   '12,450.67',
-                  style: GoogleFonts.robotoMono(
+                  style: GoogleFonts.inter(
                     color: colorScheme.onSurface,
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -165,7 +165,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                   child: Text(
                     '+24.5%',
-                    style: GoogleFonts.robotoMono(
+                    style: GoogleFonts.inter(
                       color: AppTheme.positiveColor,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -177,7 +177,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             const SizedBox(height: 4),
             Text(
               '≈ \$12,450.67',
-              style: GoogleFonts.robotoMono(
+              style: GoogleFonts.inter(
                 color: colorScheme.onSurface.withOpacity(0.7),
                 fontSize: 14,
               ),
@@ -230,7 +230,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         children: [
           Text(
             title,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               color: colorScheme.onSurface,
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -241,7 +241,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               onTap: onActionTap,
               child: Text(
                 actionText,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   color: colorScheme.primary,
                   fontSize: 14,
                 ),
@@ -365,7 +365,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       child: Center(
         child: Text(
           text,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             color: isPrimary
                 ? colorScheme.onPrimary
                 : colorScheme.onSurface.withOpacity(0.7),
@@ -415,7 +415,7 @@ class _QuickAccessItem extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             color: colorScheme.onSurface.withOpacity(0.7),
             fontSize: 12,
           ),
@@ -451,7 +451,7 @@ class _MarketItem extends StatelessWidget {
         children: [
           Text(
             symbol,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.ibmPlexMono(
               color: colorScheme.onSurface,
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -460,7 +460,7 @@ class _MarketItem extends StatelessWidget {
           const Spacer(),
           Text(
             price,
-            style: GoogleFonts.robotoMono(
+            style: GoogleFonts.inter(
               color: colorScheme.onSurface,
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -472,7 +472,7 @@ class _MarketItem extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               change,
-              style: GoogleFonts.robotoMono(
+              style: GoogleFonts.inter(
                 color: color,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -506,7 +506,7 @@ class _StatsItem extends StatelessWidget {
       children: [
         Text(
           title,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             color: colorScheme.onSurface.withOpacity(0.7),
             fontSize: 12,
           ),
@@ -514,7 +514,7 @@ class _StatsItem extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           value,
-          style: GoogleFonts.robotoMono(
+          style: GoogleFonts.inter(
             color: color,
             fontSize: 18,
             fontWeight: FontWeight.bold,
