@@ -68,18 +68,26 @@ class NetPlCardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  '+\$2,875.50',
-                  style: GoogleFonts.bebasNeue(
-                    color: AppTheme.positiveColor,
-                    fontSize: 40,
-                    letterSpacing: 1.5,
+                Flexible(
+                  flex: 3,
+                  child: Text(
+                    '+\$2,875.50',
+                    style: GoogleFonts.bebasNeue(
+                      color: AppTheme.positiveColor,
+                      fontSize: 40,
+                      letterSpacing: 1.5,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                  width: 100,
-                  child: _SparklineChart(color: AppTheme.positiveColor),
+                const SizedBox(width: 8),
+                Flexible(
+                  flex: 2,
+                  child: SizedBox(
+                    height: 40,
+                    child: _SparklineChart(color: AppTheme.positiveColor),
+                  ),
                 ),
               ],
             ),

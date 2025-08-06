@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/core/widget/nav_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const String routeName = "main";
@@ -109,98 +109,44 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(
+            NavTab(
               index: 0,
               icon: Icons.dashboard_outlined,
               selectedIcon: Icons.dashboard,
               label: 'Dashboard',
+              isSelected: _selectedIndex == 0,
+              onTap: () => _onTap(0),
               screenWidth: screenWidth,
             ),
-            _buildNavItem(
+            NavTab(
               index: 1,
               icon: Icons.history_outlined,
               selectedIcon: Icons.history,
               label: 'History',
+              isSelected: _selectedIndex == 1,
+              onTap: () => _onTap(1),
               screenWidth: screenWidth,
             ),
             SizedBox(
               width: math.max(50.0, math.min(80.0, screenWidth * 0.15)),
             ), // FloatingActionButton을 위한 비례 공간
-            _buildNavItem(
+            NavTab(
               index: 3,
               icon: Icons.calculate_outlined,
               selectedIcon: Icons.calculate,
               label: 'Tools',
+              isSelected: _selectedIndex == 3,
+              onTap: () => _onTap(3),
               screenWidth: screenWidth,
             ),
-            _buildNavItem(
+            NavTab(
               index: 4,
               icon: Icons.person_outline,
               selectedIcon: Icons.person,
               label: 'Profile',
+              isSelected: _selectedIndex == 4,
+              onTap: () => _onTap(4),
               screenWidth: screenWidth,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem({
-    required int index,
-    required IconData icon,
-    required IconData selectedIcon,
-    required String label,
-    required double screenWidth,
-  }) {
-    final isSelected = _selectedIndex == index;
-
-    // 화면 너비에 비례한 패딩과 크기 계산
-    final horizontalPadding = math.max(8.0, math.min(16.0, screenWidth * 0.03));
-    final verticalPadding = math.max(6.0, math.min(12.0, screenWidth * 0.02));
-    final iconPadding = math.max(6.0, math.min(12.0, screenWidth * 0.02));
-    final iconSize = math.max(20.0, math.min(28.0, screenWidth * 0.06));
-    final borderRadius = math.max(8.0, math.min(16.0, screenWidth * 0.03));
-    final textIconSpacing = math.max(2.0, math.min(6.0, screenWidth * 0.01));
-    final fontSize = math.max(9.0, math.min(13.0, screenWidth * 0.028));
-
-    return GestureDetector(
-      onTap: () => _onTap(index),
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: verticalPadding,
-          horizontal: horizontalPadding,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: EdgeInsets.all(iconPadding),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? AppTheme.accentColor.withOpacity(0.1)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(borderRadius),
-              ),
-              child: Icon(
-                isSelected ? selectedIcon : icon,
-                color: isSelected
-                    ? AppTheme.accentColor
-                    : AppTheme.secondaryText,
-                size: iconSize,
-              ),
-            ),
-            SizedBox(height: textIconSpacing),
-            Text(
-              label,
-              style: GoogleFonts.montserrat(
-                color: isSelected
-                    ? AppTheme.accentColor
-                    : AppTheme.secondaryText,
-                fontSize: fontSize,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-              ),
             ),
           ],
         ),
