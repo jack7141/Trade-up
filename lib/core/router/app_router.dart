@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trade_up/core/view/main_navigation_screen.dart';
 import 'package:trade_up/features/dashboard/view/dashboard_screen.dart';
+import 'package:trade_up/features/new_trade/view/new_trade_screen.dart';
 
 import '../common/exceptions.dart';
 
@@ -132,7 +133,7 @@ final router = GoRouter(
         GoRoute(
           path: '/add-trade',
           name: 'add-trade',
-          builder: (context, state) => const DashboardScreen(),
+          builder: (context, state) => const NewTradeScreen(),
         ),
         // Tools (트레이딩 도구)
         GoRoute(
