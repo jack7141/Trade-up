@@ -1,97 +1,98 @@
-TradeUp: The Smart Trading Journal
-TradeUp is not just another trading journal. It's an intelligent partner designed to help crypto traders grow by turning their trading history into actionable insights.
+# 📈 TradeUp: 스마트 트레이딩 저널
 
-Our mission is to empower traders to move beyond emotional decisions and build data-driven strategies. We achieve this by providing a seamless, intuitive, and powerful tool that analyzes trading habits, identifies patterns, and offers AI-powered coaching.
+TradeUp은 단순한 트레이딩 저널이 아닙니다. 암호화폐 트레이더들이 거래 히스토리를 실행 가능한 인사이트로 변환하여 성장할 수 있도록 돕는 지능형 파트너입니다.
 
-🎯 Core Concept & Target Audience
-The crypto market is full of noise. Most traders fail not because of bad strategies, but because of inconsistent execution and emotional biases. TradeUp is designed to solve this problem.
+우리의 미션은 트레이더들이 감정적인 결정을 넘어서 데이터 기반의 전략을 구축할 수 있도록 돕는 것입니다. 거래 습관을 분석하고, 패턴을 식별하며, AI 기반 코칭을 제공하는 직관적이고 강력한 도구를 통해 이를 실현합니다.
 
-Core Problem: Traders lack an easy way to record, analyze, and learn from their trades, leading to repeated mistakes.
+---
 
-Our Solution: A mobile-first app that automates trade logging (via API) and provides deep analysis on performance, strategy effectiveness, and psychological patterns.
+## 🎯 핵심 컨셉 & 타겟 고객
 
-Target Audience: Primarily young, tech-savvy crypto traders in Southeast Asia (Vietnam, Philippines) who are eager to improve their skills and are comfortable with mobile-first financial tools.
+### 🚨 해결하고자 하는 문제
+암호화폐 시장은 노이즈로 가득합니다. 대부분의 트레이더들이 실패하는 이유는 나쁜 전략 때문이 아니라, 일관성 없는 실행과 감정적 편향 때문입니다.
 
-✨ Key Features (MVP & Roadmap)
-Phase 1: The Hook (MVP)
-The initial version focuses on proving the core value of data-driven journaling, even with manual input.
+**핵심 문제**: 트레이더들이 거래를 기록하고, 분석하고, 학습할 수 있는 쉬운 방법이 없어 같은 실수를 반복합니다.
 
-Manual Trade Logging: An intuitive interface to log complex trades, including partial buys/sells.
+### 💡 우리의 솔루션
+API를 통한 거래 로깅을 자동화하고 성과, 전략 효과성, 심리적 패턴에 대한 깊이 있는 분석을 제공하는 모바일 우선 앱입니다.
 
-Core Analytics Dashboard: Instantly view key metrics like Net P/L, Win Rate, and Profit Factor without overwhelming charts.
+### 👥 타겟 고객
+주로 동남아시아(베트남, 필리핀)의 젊고 기술에 능숙한 암호화폐 트레이더들로, 실력 향상에 열정적이며 모바일 우선 금융 도구에 익숙한 사용자들입니다.
 
-Gamified Onboarding: A "Log Your First 10 Trades" challenge to guide new users and deliver an initial "Aha!" moment with a personalized report.
+---
 
-Phase 2: The Upgrade (Partnership Model)
-This phase introduces our unique business model, converting users into partners.
+## ✨ 주요 기능 (MVP & 로드맵)
 
-API Automation: Connect to major exchanges (like Binance, Bybit) via read-only API keys to automate the entire logging process.
+### 🎣 Phase 1: The Hook (MVP)
+초기 버전은 수동 입력으로도 데이터 기반 저널링의 핵심 가치를 증명하는 데 집중합니다.
 
-Feature Unlocking: Users who become 'Partners' by signing up with our referral code (new or sub-account) unlock premium features.
+- **📝 수동 거래 로깅**: 부분 매수/매도를 포함한 복잡한 거래를 로깅할 수 있는 직관적인 인터페이스
+- **📊 핵심 분석 대시보드**: 복잡한 차트 없이 순손익, 승률, 수익률 등 핵심 지표를 즉시 확인
+- **🎮 게임화된 온보딩**: "첫 10개 거래 로깅" 챌린지를 통해 신규 사용자를 가이드하고 개인화된 리포트로 "아하!" 순간 제공
 
-Advanced Analytics (Preview): Standard users get a monthly taste of premium features like strategy/psychology analysis and AI coaching.
+### 🚀 Phase 2: The Upgrade (파트너십 모델)
+독특한 비즈니스 모델을 도입하여 사용자를 파트너로 전환하는 단계입니다.
 
-Phase 3: The Ecosystem (Future)
-Transform the app from a tool into a platform.
+- **🔌 API 자동화**: 주요 거래소(Binance, Bybit 등)와 읽기 전용 API 키를 통해 연결하여 전체 로깅 프로세스 자동화
+- **🔓 기능 잠금 해제**: 추천 코드(신규 또는 서브 계정)로 '파트너'가 된 사용자는 프리미엄 기능 잠금 해제
+- **📈 고급 분석 (미리보기)**: 일반 사용자는 전략/심리 분석 및 AI 코칭과 같은 프리미엄 기능을 월별로 체험
 
-AI Trading Coach: Personalized advice based on user data compared against anonymized platform-wide statistics (e.g., "Your risk management is in the top 20% of users").
+### 🌐 Phase 3: The Ecosystem (미래)
+도구에서 플랫폼으로 앱을 전환합니다.
 
-Anonymous Ranking System: Gamified leaderboards for metrics like P/L %, Win Rate, and more to foster healthy competition.
+- **🤖 AI 트레이딩 코치**: 익명화된 플랫폼 전체 통계와 비교한 사용자 데이터 기반 개인화된 조언 (예: "귀하의 리스크 관리는 상위 20%에 속합니다")
+- **🏆 익명 랭킹 시스템**: 손익률, 승률 등의 지표에 대한 게임화된 리더보드로 건전한 경쟁 촉진
+- **👥 파트너 전용 커뮤니티**: 파트너들이 인사이트를 공유하고 함께 성장할 수 있는 독점 커뮤니티
 
-Partner-Only Community: An exclusive community for partners to share insights and grow together.
+---
 
-🛠️ Tech Stack
-Framework: Flutter
+## 🛠️ 기술 스택
 
-Architecture: MVVM-like layered architecture (features > view, view_model, model, widget) for scalability and maintainability.
+| 분야 | 기술 |
+|------|------|
+| **프레임워크** | Flutter |
+| **아키텍처** | MVVM 스타일 레이어드 아키텍처 (features > view, view_model, model, widget) |
+| **상태 관리** | Riverpod |
+| **데이터베이스** | Firebase Firestore / Hive/Isar (로컬 DB) |
+| **AI** | Gemini API (AI 코치 인사이트용) |
+| **네트워킹** | Dio |
+| **라우팅** | GoRouter |
 
-State Management: (To be decided - Provider, BLoC, Riverpod)
+---
 
-Database: (To be decided - Firebase Firestore, local DB like Hive/Isar)
+## 🚀 시작하기
 
-AI: Gemini API for AI Coach insights.
+프로젝트를 로컬에서 실행하고 싶은 개발자를 위한 가이드입니다.
 
-🚀 Getting Started
-This section is for developers who want to run the project locally.
+### 📋 필수 조건
 
-Prerequisites:
+- Flutter SDK 설치
+- VS Code 또는 Android Studio 등의 에디터
 
-Flutter SDK installed
+### 🔧 설치 방법
 
-An editor like VS Code or Android Studio
+1. **레포지토리 클론**
+   ```bash
+   git clone https://github.com/your-repo/tradeup.git
+   ```
 
-Installation:
+2. **프로젝트 디렉토리로 이동**
+   ```bash
+   cd tradeup
+   ```
 
-Clone the repository:
+3. **의존성 설치**
+   ```bash
+   flutter pub get
+   ```
 
-git clone https://github.com/your-repo/tradeup.git
+4. **앱 실행**
+   ```bash
+   flutter run
+   ```
 
-Navigate to the project directory:
+---
 
-cd tradeup
+## 📁 프로젝트 구조
 
-Install dependencies:
-
-flutter pub get
-
-Run the app:
-
-flutter run
-
-📁 Project Structure
-Our project follows a feature-driven directory structure to keep the codebase organized and scalable.
-
-lib/
-├── features/       # Each feature is a self-contained module
-│   ├── dashboard/
-│   ├── new_trade/
-│   └── ...
-├── data/           # Data models and repositories
-├── core/           # Core utilities, theme, routing
-└── main.dart       # App entry point
-
-🤝 Contributing
-We welcome contributions! Please read our CONTRIBUTING.md file to learn how you can help improve TradeUp.
-
-📄 License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+확장성과 유지보수성을 위해 기능 중심의 디렉토리 구조를 따릅니다.
