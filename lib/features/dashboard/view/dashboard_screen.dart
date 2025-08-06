@@ -38,9 +38,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             // --- 3. 핵심 성과 지표 (Key Metrics) ---
             SliverToBoxAdapter(child: _buildKeyMetrics()),
 
+            // --- 4. 거래 활동 (Trading Activity) ---
+            SliverToBoxAdapter(child: _buildTradingActivity()),
+
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-            // --- 4. AI 코치 인사이트 ---
+            // --- 5. AI 코치 인사이트 ---
             SliverToBoxAdapter(
               child: _buildSectionHeader(title: 'AI Coach Insight'),
             ),
@@ -268,6 +271,77 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTradingActivity() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: _surfaceColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: _borderColor, width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Trader Level',
+                  style: GoogleFonts.montserrat(
+                    color: _secondaryTextColor,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  'Novice Trader',
+                  style: GoogleFonts.montserrat(
+                    color: _accentColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: const LinearProgressIndicator(
+                      value: 32 / 50, // 32 trades out of 50 for next level
+                      minHeight: 8,
+                      backgroundColor: _borderColor,
+                      valueColor: AlwaysStoppedAnimation<Color>(_accentColor),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  '32 / 50',
+                  style: GoogleFonts.bebasNeue(
+                    color: _primaryTextColor,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '18 more trades to reach Pro Trader!',
+              style: GoogleFonts.montserrat(
+                color: _secondaryTextColor,
+                fontSize: 12,
               ),
             ),
           ],
