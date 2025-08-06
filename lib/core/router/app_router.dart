@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trade_up/core/view/main_navigation_screen.dart';
 import 'package:trade_up/features/dashboard/view/dashboard_screen.dart';
 
 import '../common/exceptions.dart';
@@ -107,13 +108,45 @@ Future<String> _checkAutoLogin() async {
 }
 
 final router = GoRouter(
-  initialLocation: DashboardScreen.routePath,
+  initialLocation: '/dashboard',
   onException: handleRouterException,
   routes: [
-    GoRoute(
-      path: DashboardScreen.routePath,
-      name: DashboardScreen.routeName,
-      builder: (context, state) => const DashboardScreen(),
+    ShellRoute(
+      builder: (context, state, child) {
+        return MainNavigationScreen(child: child);
+      },
+      routes: [
+        // Dashboard
+        GoRoute(
+          path: '/dashboard',
+          name: 'dashboard',
+          builder: (context, state) => const DashboardScreen(),
+        ),
+        // History (거래 히스토리)
+        GoRoute(
+          path: '/history',
+          name: 'history',
+          builder: (context, state) => const DashboardScreen(),
+        ),
+        // Add Trade (거래 추가)
+        GoRoute(
+          path: '/add-trade',
+          name: 'add-trade',
+          builder: (context, state) => const DashboardScreen(),
+        ),
+        // Tools (트레이딩 도구)
+        GoRoute(
+          path: '/tools',
+          name: 'tools',
+          builder: (context, state) => const DashboardScreen(),
+        ),
+        // Profile (프로필)
+        GoRoute(
+          path: '/profile',
+          name: 'profile',
+          builder: (context, state) => const DashboardScreen(),
+        ),
+      ],
     ),
   ],
 );
