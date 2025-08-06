@@ -51,7 +51,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-            // --- 5. 최근 매매 기록 ---
+            // --- 6. 최근 매매 기록 ---
             SliverToBoxAdapter(
               child: _buildSectionHeader(
                 title: 'Recent Trades',
@@ -104,15 +104,21 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
             ],
           ),
-          // 불필요한 아이콘 제거, 프로필 아이콘만 남김
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: _surfaceColor,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: _borderColor),
-            ),
+          // --- 수정된 부분: 랭킹 배지와 프로필 아이콘을 함께 배치 ---
+          Row(
+            children: [
+              _RankingBadge(rank: 'Novice', icon: Icons.military_tech_outlined),
+              const SizedBox(width: 12),
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: _surfaceColor,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: _borderColor),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -158,12 +164,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       child: GridView.count(
-        crossAxisCount: 2, // 3개에서 2개로 변경하여 2x2 그리드 구성
+        crossAxisCount: 2,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        childAspectRatio: 1.5, // 카드 비율 조정
+        childAspectRatio: 1.5,
         children: [
           _MetricItem(title: 'Win Rate', value: '62.5%'),
           _MetricItem(title: 'Avg. P/L', value: '+\$89.8', isPositive: true),
@@ -176,8 +182,79 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             title: 'Largest Loss',
             value: '-\$120.5',
             isPositive: false,
-          ), // 최대 손실 카드 추가
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTradingActivity() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: _surfaceColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: _borderColor, width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Trader Level',
+                  style: GoogleFonts.montserrat(
+                    color: _secondaryTextColor,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  'Novice Trader',
+                  style: GoogleFonts.montserrat(
+                    color: _accentColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: const LinearProgressIndicator(
+                      value: 32 / 50, // 32 trades out of 50 for next level
+                      minHeight: 8,
+                      backgroundColor: _borderColor,
+                      valueColor: AlwaysStoppedAnimation<Color>(_accentColor),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  '32 / 50',
+                  style: GoogleFonts.bebasNeue(
+                    color: _primaryTextColor,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '18 more trades to reach Pro Trader!',
+              style: GoogleFonts.montserrat(
+                color: _secondaryTextColor,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -279,77 +356,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  Widget _buildTradingActivity() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: _surfaceColor,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _borderColor, width: 1),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Trader Level',
-                  style: GoogleFonts.montserrat(
-                    color: _secondaryTextColor,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  'Novice Trader',
-                  style: GoogleFonts.montserrat(
-                    color: _accentColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: const LinearProgressIndicator(
-                      value: 32 / 50, // 32 trades out of 50 for next level
-                      minHeight: 8,
-                      backgroundColor: _borderColor,
-                      valueColor: AlwaysStoppedAnimation<Color>(_accentColor),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  '32 / 50',
-                  style: GoogleFonts.bebasNeue(
-                    color: _primaryTextColor,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '18 more trades to reach Pro Trader!',
-              style: GoogleFonts.montserrat(
-                color: _secondaryTextColor,
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildRecentTrades() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -376,6 +382,56 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       height: 1,
       color: _borderColor,
       margin: const EdgeInsets.symmetric(vertical: 8),
+    );
+  }
+}
+
+// --- 신규 위젯: 랭킹 배지 (디자인 수정) ---
+class _RankingBadge extends StatelessWidget {
+  final String rank;
+  final IconData icon;
+
+  const _RankingBadge({required this.rank, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFFF7931A).withOpacity(0.15),
+            const Color(0xFFF7931A).withOpacity(0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF7931A).withOpacity(0.4)),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFF7931A).withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: const Color(0xFFF7931A), size: 16),
+          const SizedBox(width: 6),
+          Text(
+            rank,
+            style: GoogleFonts.montserrat(
+              color: const Color(0xFFF7931A),
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
