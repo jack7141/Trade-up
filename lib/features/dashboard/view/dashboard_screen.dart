@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
-import 'package:trade_up/features/dashboard/widget/metric_card.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
-  static const String routeName = '/dashboard';
-  static const String routePath = '/dashboard';
+  static const String routeName = '/';
+  static const String routePath = '/';
   const DashboardScreen({super.key});
 
   @override
@@ -23,408 +23,478 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // 헤더 영역
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '안녕하세요! 👋',
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '오늘도 스마트한 트레이딩 하세요',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            Icons.notifications_outlined,
-                            color: colorScheme.onPrimaryContainer,
-                            size: 24,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // --- 1. 헤더 영역 ---
+            SliverToBoxAdapter(child: _buildHeader()),
 
-            // 총 수익률 카드
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      colorScheme.primary,
-                      colorScheme.primary.withOpacity(0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: colorScheme.primary.withOpacity(0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '총 수익률',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: colorScheme.onPrimary.withOpacity(0.9),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.positive.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.trending_up,
-                                color: AppTheme.positive,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '이번 달',
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  color: AppTheme.positive,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      '+24.5%',
-                      style: theme.textTheme.headlineLarge?.copyWith(
-                        color: colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '+\$2,450.00',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: colorScheme.onPrimary.withOpacity(0.8),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // --- 2. 총 자산 카드 ---
+            SliverToBoxAdapter(child: _buildTotalAssetsCard()),
+
+            // --- 3. 빠른 액세스 메뉴 ---
+            SliverToBoxAdapter(child: _buildQuickAccessMenu()),
 
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-            // 핵심 지표 그리드
+            // --- 4. 시장 개요 ---
+            SliverToBoxAdapter(child: _buildSectionHeader(title: '시장 개요')),
+            SliverToBoxAdapter(child: _buildMarketOverview()),
+
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+            // --- 5. 내 거래 현황 ---
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '핵심 지표',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: MetricCard(
-                            title: '승률',
-                            value: '68%',
-                            subtitle: '이번 주',
-                            icon: Icons.emoji_events_outlined,
-                            color: Colors.green,
-                            trend: '+2%',
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: MetricCard(
-                            title: '총 거래',
-                            value: '47',
-                            subtitle: '이번 달',
-                            icon: Icons.bar_chart_outlined,
-                            color: Colors.blue,
-                            trend: '+5',
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: MetricCard(
-                            title: '평균 수익',
-                            value: '\$52.13',
-                            subtitle: '거래당',
-                            icon: Icons.trending_up_outlined,
-                            color: Colors.orange,
-                            trend: '+\$3.2',
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: MetricCard(
-                            title: '최대 손실',
-                            value: '-\$89.50',
-                            subtitle: '이번 달',
-                            icon: Icons.trending_down_outlined,
-                            color: Colors.red,
-                            trend: '개선됨',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              child: _buildSectionHeader(
+                title: '내 거래 현황',
+                actionText: '전체보기',
+                onActionTap: () {
+                  // TODO: 전체 히스토리로 이동
+                },
               ),
             ),
+            SliverToBoxAdapter(child: _buildMyTradesStatus()),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
-
-            // 빠른 액션 버튼들
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '빠른 액션',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _ActionButton(
-                            title: '새 거래 추가',
-                            subtitle: '수동으로 거래 기록',
-                            icon: Icons.add_circle_outline,
-                            color: colorScheme.primary,
-                            onTap: () {
-                              // TODO: 새 거래 추가 화면으로 이동
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _ActionButton(
-                            title: 'AI 분석',
-                            subtitle: '패턴 분석 받기',
-                            icon: Icons.psychology_outlined,
-                            color: Colors.purple,
-                            onTap: () {
-                              // TODO: AI 분석 화면으로 이동
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
-
-            // 최근 거래 내역
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '최근 거래',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // TODO: 전체 거래 히스토리로 이동
-                          },
-                          child: const Text('전체 보기'),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                ),
-              ),
-            ),
-
-            // 최근 거래 리스트
-            SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                // 임시 데이터
-                final trades = [
-                  {
-                    'symbol': 'BTC/USDT',
-                    'type': 'BUY',
-                    'profit': '+\$125.50',
-                    'time': '2시간 전',
-                    'isProfit': true,
-                  },
-                  {
-                    'symbol': 'ETH/USDT',
-                    'type': 'SELL',
-                    'profit': '-\$45.20',
-                    'time': '5시간 전',
-                    'isProfit': false,
-                  },
-                  {
-                    'symbol': 'ADA/USDT',
-                    'type': 'BUY',
-                    'profit': '+\$89.30',
-                    'time': '1일 전',
-                    'isProfit': true,
-                  },
-                ];
-
-                final trade = trades[index];
-                return Container(
-                  margin: const EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    bottom: 12,
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: colorScheme.surface,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: colorScheme.outline.withOpacity(0.1),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: trade['isProfit'] as bool
-                              ? AppTheme.positive.withOpacity(0.1)
-                              : AppTheme.negative.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          trade['type'] == 'BUY'
-                              ? Icons.arrow_upward
-                              : Icons.arrow_downward,
-                          color: trade['isProfit'] as bool
-                              ? AppTheme.positive
-                              : AppTheme.negative,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              trade['symbol'] as String,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              trade['time'] as String,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: colorScheme.onSurface.withOpacity(0.6),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        trade['profit'] as String,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: trade['isProfit'] as bool
-                              ? AppTheme.positive
-                              : AppTheme.negative,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }, childCount: 3),
-            ),
-
-            const SliverToBoxAdapter(child: SizedBox(height: 100)), // 하단 여백
+            const SliverToBoxAdapter(child: SizedBox(height: 100)),
           ],
         ),
       ),
     );
   }
+
+  // --- 위젯 빌더 함수들 ---
+
+  Widget _buildHeader() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: colorScheme.primary,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.trending_up,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'TradeUp',
+                style: GoogleFonts.poppins(
+                  color: colorScheme.onSurface,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              _buildIconButton(Icons.qr_code_scanner),
+              const SizedBox(width: 12),
+              _buildIconButton(Icons.notifications_outlined),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTotalAssetsCard() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: colorScheme.outline, width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  '총 자산 (USDT)',
+                  style: GoogleFonts.poppins(
+                    color: colorScheme.onSurface.withOpacity(0.7),
+                    fontSize: 14,
+                  ),
+                ),
+                const Spacer(),
+                Icon(
+                  Icons.visibility_off_outlined,
+                  color: colorScheme.onSurface.withOpacity(0.7),
+                  size: 18,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '12,450.67',
+                  style: GoogleFonts.robotoMono(
+                    color: colorScheme.onSurface,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppTheme.positiveColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    '+24.5%',
+                    style: GoogleFonts.robotoMono(
+                      color: AppTheme.positiveColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '≈ \$12,450.67',
+              style: GoogleFonts.robotoMono(
+                color: colorScheme.onSurface.withOpacity(0.7),
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionButton(text: '입금', isPrimary: true),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildActionButton(text: '출금', isPrimary: false),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickAccessMenu() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _QuickAccessItem(icon: Icons.swap_horiz, label: '거래'),
+          _QuickAccessItem(icon: Icons.psychology_outlined, label: 'AI 분석'),
+          _QuickAccessItem(icon: Icons.copy_outlined, label: '카피트레이딩'),
+          _QuickAccessItem(icon: Icons.school_outlined, label: '학습'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader({
+    required String title,
+    String? actionText,
+    VoidCallback? onActionTap,
+  }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              color: colorScheme.onSurface,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          if (actionText != null)
+            GestureDetector(
+              onTap: onActionTap,
+              child: Text(
+                actionText,
+                style: GoogleFonts.poppins(
+                  color: colorScheme.primary,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMarketOverview() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: colorScheme.outline, width: 1),
+        ),
+        child: Column(
+          children: [
+            _MarketItem(
+              symbol: 'BTC/USDT',
+              price: '43,250.67',
+              change: '+2.45%',
+              isPositive: true,
+            ),
+            _buildDivider(),
+            _MarketItem(
+              symbol: 'ETH/USDT',
+              price: '2,650.89',
+              change: '+1.23%',
+              isPositive: true,
+            ),
+            _buildDivider(),
+            _MarketItem(
+              symbol: 'BNB/USDT',
+              price: '315.42',
+              change: '-0.87%',
+              isPositive: false,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMyTradesStatus() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: colorScheme.outline, width: 1),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: _StatsItem(
+                title: '오늘 손익',
+                value: '+\$245.67',
+                color: AppTheme.positiveColor,
+              ),
+            ),
+            Container(width: 1, height: 40, color: colorScheme.outline),
+            Expanded(
+              child: _StatsItem(
+                title: '총 손익',
+                value: '+\$1,234.56',
+                color: AppTheme.positiveColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // --- 공통 위젯들 ---
+
+  Widget _buildIconButton(IconData icon) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: colorScheme.outline, width: 1),
+      ),
+      child: Icon(
+        icon,
+        color: colorScheme.onSurface.withOpacity(0.7),
+        size: 20,
+      ),
+    );
+  }
+
+  Widget _buildActionButton({required String text, required bool isPrimary}) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: isPrimary ? colorScheme.primary : Colors.transparent,
+        borderRadius: BorderRadius.circular(8),
+        border: isPrimary
+            ? null
+            : Border.all(color: colorScheme.onSurface.withOpacity(0.7)),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: GoogleFonts.poppins(
+            color: isPrimary
+                ? colorScheme.onPrimary
+                : colorScheme.onSurface.withOpacity(0.7),
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      height: 1,
+      color: colorScheme.outline,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+    );
+  }
 }
 
-// 액션 버튼 위젯
-class _ActionButton extends StatelessWidget {
-  final String title;
-  final String subtitle;
+// 빠른 액세스 아이템
+class _QuickAccessItem extends StatelessWidget {
   final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
+  final String label;
 
-  const _ActionButton({
+  const _QuickAccessItem({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Column(
+      children: [
+        Container(
+          width: 52,
+          height: 52,
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: colorScheme.primary, size: 24),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            color: colorScheme.onSurface.withOpacity(0.7),
+            fontSize: 12,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// 마켓 아이템
+class _MarketItem extends StatelessWidget {
+  final String symbol;
+  final String price;
+  final String change;
+  final bool isPositive;
+
+  const _MarketItem({
+    required this.symbol,
+    required this.price,
+    required this.change,
+    required this.isPositive,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final color = isPositive ? AppTheme.positiveColor : AppTheme.negativeColor;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          Text(
+            symbol,
+            style: GoogleFonts.poppins(
+              color: colorScheme.onSurface,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const Spacer(),
+          Text(
+            price,
+            style: GoogleFonts.robotoMono(
+              color: colorScheme.onSurface,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Container(
+            width: 80,
+            alignment: Alignment.centerRight,
+            child: Text(
+              change,
+              style: GoogleFonts.robotoMono(
+                color: color,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 통계 아이템
+class _StatsItem extends StatelessWidget {
+  final String title;
+  final String value;
+  final Color color;
+
+  const _StatsItem({
     required this.title,
-    required this.subtitle,
-    required this.icon,
+    required this.value,
     required this.color,
-    required this.onTap,
   });
 
   @override
@@ -432,44 +502,25 @@ class _ActionButton extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: colorScheme.outline.withOpacity(0.1)),
+    return Column(
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+            color: colorScheme.onSurface.withOpacity(0.7),
+            fontSize: 12,
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              subtitle,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: colorScheme.onSurface.withOpacity(0.6),
-              ),
-            ),
-          ],
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: GoogleFonts.robotoMono(
+            color: color,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      ),
+      ],
     );
   }
 }

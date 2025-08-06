@@ -17,7 +17,7 @@ class TradeUpApp extends ConsumerWidget {
       title: 'TradeUp',
       debugShowCheckedModeBanner: false,
       routerConfig: router,
-      theme: AppTheme.getTheme(isDark: false),
+      theme: AppTheme.getTheme(isDark: true),
       darkTheme: AppTheme.getTheme(isDark: true),
     );
   }
