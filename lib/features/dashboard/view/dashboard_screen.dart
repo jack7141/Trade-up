@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:trade_up/core/theme/app_theme.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   static const String routeName = '/';
@@ -12,20 +13,10 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
-  // --- 앱의 핵심 디자인 시스템 ---
-  static const Color _backgroundColor = Color(0xFF0D0D0D);
-  static const Color _surfaceColor = Color(0xFF1A1A1A);
-  static const Color _borderColor = Color(0xFF2B3139);
-  static const Color _primaryTextColor = Color(0xFFFFFFFF);
-  static const Color _secondaryTextColor = Color(0xFF848E9C);
-  static const Color _accentColor = Color(0xFFF7931A);
-  static const Color _positiveColor = Color(0xFF0ECB81);
-  static const Color _negativeColor = Color(0xFFF23645);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -70,8 +61,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  // --- 위젯 빌더 함수들 ---
-
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
@@ -84,7 +73,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: _accentColor,
+                  color: AppTheme.accentColor,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -97,7 +86,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               Text(
                 'TradeUp',
                 style: GoogleFonts.montserrat(
-                  color: _primaryTextColor,
+                  color: AppTheme.primaryText,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
@@ -113,9 +102,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: _surfaceColor,
+                  color: AppTheme.surfaceColor,
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: _borderColor),
+                  border: Border.all(color: AppTheme.borderColor),
                 ),
               ),
             ],
@@ -131,9 +120,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: _surfaceColor,
+          color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _borderColor, width: 1),
+          border: Border.all(color: AppTheme.borderColor, width: 1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,7 +130,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             Text(
               'Net P/L',
               style: GoogleFonts.montserrat(
-                color: _secondaryTextColor,
+                color: AppTheme.secondaryText,
                 fontSize: 14,
               ),
             ),
@@ -149,7 +138,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             Text(
               '+\$2,875.50',
               style: GoogleFonts.bebasNeue(
-                color: _positiveColor,
+                color: AppTheme.positiveColor,
                 fontSize: 40,
                 letterSpacing: 1.5,
               ),
@@ -194,9 +183,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: _surfaceColor,
+          color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _borderColor, width: 1),
+          border: Border.all(color: AppTheme.borderColor, width: 1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,14 +196,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 Text(
                   'Trader Level',
                   style: GoogleFonts.montserrat(
-                    color: _secondaryTextColor,
+                    color: AppTheme.secondaryText,
                     fontSize: 14,
                   ),
                 ),
                 Text(
                   'Novice Trader',
                   style: GoogleFonts.montserrat(
-                    color: _accentColor,
+                    color: AppTheme.accentColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
@@ -227,11 +216,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 Expanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: const LinearProgressIndicator(
+                    child: LinearProgressIndicator(
                       value: 32 / 50, // 32 trades out of 50 for next level
                       minHeight: 8,
-                      backgroundColor: _borderColor,
-                      valueColor: AlwaysStoppedAnimation<Color>(_accentColor),
+                      backgroundColor: AppTheme.borderColor,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppTheme.accentColor,
+                      ),
                     ),
                   ),
                 ),
@@ -239,7 +230,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 Text(
                   '32 / 50',
                   style: GoogleFonts.bebasNeue(
-                    color: _primaryTextColor,
+                    color: AppTheme.primaryText,
                     fontSize: 16,
                   ),
                 ),
@@ -249,7 +240,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             Text(
               '18 more trades to reach Pro Trader!',
               style: GoogleFonts.montserrat(
-                color: _secondaryTextColor,
+                color: AppTheme.secondaryText,
                 fontSize: 12,
               ),
             ),
@@ -272,7 +263,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           Text(
             title,
             style: GoogleFonts.montserrat(
-              color: _primaryTextColor,
+              color: AppTheme.primaryText,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -283,7 +274,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               child: Text(
                 actionText,
                 style: GoogleFonts.montserrat(
-                  color: _accentColor,
+                  color: AppTheme.accentColor,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
@@ -300,25 +291,25 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: _surfaceColor,
+          color: AppTheme.surfaceColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _borderColor, width: 1),
+          border: Border.all(color: AppTheme.borderColor, width: 1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.psychology_outlined,
-                  color: _accentColor,
+                  color: AppTheme.accentColor,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   "Today's Coaching",
                   style: GoogleFonts.montserrat(
-                    color: _accentColor,
+                    color: AppTheme.accentColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
@@ -329,7 +320,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             Text(
               "Your win rate with the '#Breakout' strategy is 78%. Keep capitalizing on this pattern.",
               style: GoogleFonts.montserrat(
-                color: _secondaryTextColor.withOpacity(0.9),
+                color: AppTheme.secondaryText.withOpacity(0.9),
                 fontSize: 14,
                 height: 1.6,
               ),
@@ -344,7 +335,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 child: Text(
                   "Learn More",
                   style: GoogleFonts.montserrat(
-                    color: _accentColor,
+                    color: AppTheme.accentColor,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -380,7 +371,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget _buildDivider() {
     return Container(
       height: 1,
-      color: _borderColor,
+      color: AppTheme.borderColor,
       margin: const EdgeInsets.symmetric(vertical: 8),
     );
   }
@@ -400,17 +391,17 @@ class _RankingBadge extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFFF7931A).withOpacity(0.15),
-            const Color(0xFFF7931A).withOpacity(0.05),
+            AppTheme.accentColor.withOpacity(0.15),
+            AppTheme.accentColor.withOpacity(0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF7931A).withOpacity(0.4)),
+        border: Border.all(color: AppTheme.accentColor.withOpacity(0.4)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFF7931A).withOpacity(0.1),
+            color: AppTheme.accentColor.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -419,12 +410,12 @@ class _RankingBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: const Color(0xFFF7931A), size: 16),
+          Icon(icon, color: AppTheme.accentColor, size: 16),
           const SizedBox(width: 6),
           Text(
             rank,
             style: GoogleFonts.montserrat(
-              color: const Color(0xFFF7931A),
+              color: AppTheme.accentColor,
               fontSize: 12,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.5,
@@ -450,19 +441,19 @@ class _MetricItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color valueColor = const Color(0xFFFFFFFF);
+    Color valueColor = AppTheme.primaryText;
     if (isPositive != null) {
       valueColor = isPositive!
-          ? const Color(0xFF0ECB81)
-          : const Color(0xFFF23645);
+          ? AppTheme.positiveColor
+          : AppTheme.negativeColor;
     }
 
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
+        color: AppTheme.surfaceColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF2B3139), width: 1),
+        border: Border.all(color: AppTheme.borderColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -471,7 +462,7 @@ class _MetricItem extends StatelessWidget {
           Text(
             title,
             style: GoogleFonts.montserrat(
-              color: const Color(0xFF848E9C),
+              color: AppTheme.secondaryText,
               fontSize: 12,
             ),
           ),
@@ -504,9 +495,7 @@ class _RecentTradeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isPositive
-        ? const Color(0xFF0ECB81)
-        : const Color(0xFFF23645);
+    final color = isPositive ? AppTheme.positiveColor : AppTheme.negativeColor;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -514,7 +503,7 @@ class _RecentTradeItem extends StatelessWidget {
           Text(
             symbol,
             style: GoogleFonts.montserrat(
-              color: Colors.white,
+              color: AppTheme.primaryText,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
