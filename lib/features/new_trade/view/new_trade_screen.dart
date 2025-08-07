@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
@@ -83,6 +84,9 @@ class _NewTradeScreenState extends State<NewTradeScreen>
     _priceController.addListener(_updateOrderValue);
     _quantityController.addListener(_updateOrderValue);
 
+    // 테스트용 더미 데이터 추가
+    _addDummyData();
+
     // 애니메이션을 첫 번째 프레임 렌더링 후에 시작
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -90,6 +94,54 @@ class _NewTradeScreenState extends State<NewTradeScreen>
         _slideController.forward();
       }
     });
+  }
+
+  // 테스트용 더미 데이터 생성
+  void _addDummyData() {
+    final now = DateTime.now();
+
+    // 진입 거래들 (Long 포지션)
+    _executions.addAll([
+      Execution(
+        price: 43250.00,
+        quantity: 0.5,
+        timestamp: now.subtract(const Duration(hours: 2, minutes: 30)),
+        isEntry: true,
+        side: PositionSide.long,
+      ),
+      Execution(
+        price: 42800.00,
+        quantity: 0.3,
+        timestamp: now.subtract(const Duration(hours: 1, minutes: 45)),
+        isEntry: true,
+        side: PositionSide.long,
+      ),
+      Execution(
+        price: 42500.00,
+        quantity: 0.2,
+        timestamp: now.subtract(const Duration(hours: 1, minutes: 15)),
+        isEntry: true,
+        side: PositionSide.long,
+      ),
+    ]);
+
+    // 청산 거래들 (일부 청산)
+    _executions.addAll([
+      Execution(
+        price: 44100.00,
+        quantity: 0.3,
+        timestamp: now.subtract(const Duration(minutes: 45)),
+        isEntry: false,
+        side: PositionSide.long,
+      ),
+      Execution(
+        price: 44350.00,
+        quantity: 0.4,
+        timestamp: now.subtract(const Duration(minutes: 20)),
+        isEntry: false,
+        side: PositionSide.long,
+      ),
+    ]);
   }
 
   void _updateOrderValue() {

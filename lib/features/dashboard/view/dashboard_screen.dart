@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/features/dashboard/widget/daily_pnl_chart_widget.dart';
 import 'package:trade_up/features/dashboard/widget/metric_card.dart';
 import 'package:trade_up/features/dashboard/widget/net_pl_card.dart';
 import 'package:trade_up/features/dashboard/widget/ranking_badget.dart';
 import 'package:trade_up/features/dashboard/widget/recent_trade.dart';
-import 'package:trade_up/features/dashboard/widget/trading_activity.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   static const String routeName = '/';
@@ -20,6 +21,8 @@ class DashboardScreen extends ConsumerStatefulWidget {
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
@@ -27,42 +30,46 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           slivers: [
             // --- 1. 헤더 ---
             SliverToBoxAdapter(child: _buildHeader()),
+            // 1. 총 손익 (가장 중요)
+            SliverToBoxAdapter(child: const NetPlCardWidget()),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
-            // --- 2. 총 손익 (Net P/L) ---
-            SliverToBoxAdapter(child: NetPlCardWidget()),
-
-            // --- 3. 핵심 성과 지표 (Key Metrics) ---
+            // 2. 핵심 지표
             SliverToBoxAdapter(child: MetricsWidget()),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
-            // --- 4. 거래 활동 (Trading Activity) ---
-            SliverToBoxAdapter(child: TradingActivityWidget()),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            // 3. Daily P&L (간단한 차트)
+            SliverToBoxAdapter(child: const DailyPnlChartWidget()),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
-            // --- 5. 거래 도구(Kelly Simulator) ---
-            SliverToBoxAdapter(
-              child: _buildSectionHeader(title: 'Trading Tools'),
-            ),
-            SliverToBoxAdapter(child: _buildTradingTools()),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
-
-            // --- 6. AI 코치 인사이트 ---
+            // 4. AI 인사이트 (액션 가능한 정보)
             SliverToBoxAdapter(
               child: _buildSectionHeader(title: 'AI Coach Insight'),
             ),
             SliverToBoxAdapter(child: _buildAiInsightCard()),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
-            // --- 6. 최근 매매 기록 ---
+            // 5. 거래 도구 (빠른 액세스)
+            SliverToBoxAdapter(
+              child: _buildSectionHeader(title: 'Trading Tools'),
+            ),
+            SliverToBoxAdapter(child: _buildTradingTools()),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+            // 6. 최근 거래 (축약된 버전)
             SliverToBoxAdapter(
               child: _buildSectionHeader(
                 title: 'Recent Trades',
                 actionText: 'View All',
-                onActionTap: () {
-                  // TODO: 전체 히스토리로 이동
-                },
+                onActionTap: () {},
               ),
             ),
-            SliverToBoxAdapter(child: RecentTradeWidget()),
+            SliverToBoxAdapter(child: const RecentTradeWidget()),
+
+            // 고급 기능들은 별도 탭/페이지로 이동
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+            SliverToBoxAdapter(child: _buildAdvancedFeaturesCard()),
+
             const SliverToBoxAdapter(child: SizedBox(height: 100)), // 하단 여백
           ],
         ),
@@ -309,6 +316,94 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAdvancedFeaturesCard() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppTheme.borderColor, width: 1),
+        ),
+        child: Column(
+          children: [
+            Text(
+              'Advanced Analytics',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.primaryText,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Explore detailed performance analysis, trading calendar, and Zella Score.',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.secondaryText,
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildFeatureButton(
+                    'Trading Calendar',
+                    Icons.calendar_month,
+                    () {
+                      context.push('/full-calendar');
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _buildFeatureButton(
+                    'Performance Analysis',
+                    Icons.analytics,
+                    () {
+                      context.push('/performance-analysis');
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeatureButton(String title, IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        decoration: BoxDecoration(
+          color: AppTheme.backgroundColor,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppTheme.borderColor),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: AppTheme.accentColor, size: 20),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: GoogleFonts.montserrat(
+                color: AppTheme.primaryText,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

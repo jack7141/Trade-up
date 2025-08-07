@@ -5,6 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trade_up/core/view/main_navigation_screen.dart';
 import 'package:trade_up/features/dashboard/view/dashboard_screen.dart';
+import 'package:trade_up/features/dashboard/view/full_calendar_screen.dart';
+import 'package:trade_up/features/dashboard/view/performance_analysis_screen.dart';
 import 'package:trade_up/features/new_trade/view/new_trade_screen.dart';
 
 import '../common/exceptions.dart';
@@ -134,6 +136,18 @@ final router = GoRouter(
           path: '/add-trade',
           name: 'add-trade',
           builder: (context, state) => const NewTradeScreen(),
+        ),
+
+        // Advanced Analytics Routes
+        GoRoute(
+          path: '/full-calendar',
+          name: 'full-calendar',
+          builder: (context, state) => const FullCalendarScreen(),
+        ),
+        GoRoute(
+          path: '/performance-analysis',
+          name: 'performance-analysis',
+          builder: (context, state) => const PerformanceAnalysisScreen(),
         ),
         // Tools (트레이딩 도구)
         GoRoute(
