@@ -50,7 +50,24 @@ class FullCalendarScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const TradingCalendarWidget(),
+                    // 캘린더를 LayoutBuilder로 감싸서 크기 최적화
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final screenHeight = MediaQuery.of(context).size.height;
+                        final maxHeight = screenHeight < 700
+                            ? screenHeight *
+                                  0.5 // 작은 화면에서는 50%
+                            : screenHeight * 0.6; // 큰 화면에서는 60%
+
+                        return Container(
+                          constraints: BoxConstraints(
+                            maxHeight: maxHeight,
+                            minHeight: 300, // 최소 높이 줄임
+                          ),
+                          child: const TradingCalendarWidget(),
+                        );
+                      },
+                    ),
                     const SizedBox(height: 24),
 
                     // 추가 통계 정보
@@ -215,80 +232,137 @@ class FullCalendarScreen extends StatelessWidget {
       ('Sun', 86, 1),
     ];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Performance by Weekday',
-          style: GoogleFonts.montserrat(
-            color: AppTheme.primaryText,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 12),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 화면 크기에 따른 동적 크기 계산
+        final screenWidth = constraints.maxWidth;
+        final isSmallScreen = screenWidth < 600;
+        final isMediumScreen = screenWidth >= 600 && screenWidth < 900;
 
-        Row(
-          children: weekdayData.map((data) {
-            final (day, pnl, trades) = data;
-            final isPositive = pnl >= 0;
+        // 각 카드의 높이 계산
+        final cardHeight = isSmallScreen
+            ? 80.0
+            : isMediumScreen
+            ? 90.0
+            : 100.0;
 
-            return Expanded(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: isPositive
-                      ? AppTheme.positiveColor.withOpacity(0.1)
-                      : pnl < 0
-                      ? AppTheme.negativeColor.withOpacity(0.1)
-                      : AppTheme.backgroundColor,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: isPositive
-                        ? AppTheme.positiveColor.withOpacity(0.3)
-                        : pnl < 0
-                        ? AppTheme.negativeColor.withOpacity(0.3)
-                        : AppTheme.borderColor,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      day,
-                      style: GoogleFonts.montserrat(
-                        color: AppTheme.secondaryText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      pnl == 0 ? '-' : '\$${pnl.abs()}',
-                      style: GoogleFonts.robotoMono(
-                        color: isPositive
-                            ? AppTheme.positiveColor
-                            : pnl < 0
-                            ? AppTheme.negativeColor
-                            : AppTheme.secondaryText,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      '$trades trades',
-                      style: GoogleFonts.montserrat(
-                        color: AppTheme.secondaryText,
-                        fontSize: 8,
-                      ),
-                    ),
-                  ],
-                ),
+        // 폰트 크기 동적 계산
+        final dayFontSize = isSmallScreen
+            ? 9.0
+            : isMediumScreen
+            ? 10.0
+            : 11.0;
+        final pnlFontSize = isSmallScreen
+            ? 10.0
+            : isMediumScreen
+            ? 11.0
+            : 12.0;
+        final tradesFontSize = isSmallScreen
+            ? 7.0
+            : isMediumScreen
+            ? 8.0
+            : 9.0;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Performance by Weekday',
+              style: GoogleFonts.montserrat(
+                color: AppTheme.primaryText,
+                fontSize: isSmallScreen ? 14 : 16,
+                fontWeight: FontWeight.w600,
               ),
-            );
-          }).toList(),
-        ),
-      ],
+            ),
+            const SizedBox(height: 12),
+
+            // 동적 크기의 요일별 성과 카드들
+            SizedBox(
+              height: cardHeight,
+              child: Row(
+                children: weekdayData.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final (day, pnl, trades) = entry.value;
+                  final isPositive = pnl >= 0;
+                  final isLast = index == weekdayData.length - 1;
+
+                  return Expanded(
+                    child: Container(
+                      height: cardHeight,
+                      margin: EdgeInsets.only(
+                        right: isLast ? 0 : (isSmallScreen ? 3 : 4),
+                      ),
+                      decoration: BoxDecoration(
+                        color: isPositive
+                            ? AppTheme.positiveColor.withOpacity(0.1)
+                            : pnl < 0
+                            ? AppTheme.negativeColor.withOpacity(0.1)
+                            : AppTheme.backgroundColor,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isPositive
+                              ? AppTheme.positiveColor.withOpacity(0.3)
+                              : pnl < 0
+                              ? AppTheme.negativeColor.withOpacity(0.3)
+                              : AppTheme.borderColor,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // 요일
+                          Text(
+                            day,
+                            style: GoogleFonts.montserrat(
+                              color: AppTheme.secondaryText,
+                              fontSize: dayFontSize,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: isSmallScreen ? 2 : 4),
+
+                          // P&L 금액
+                          Flexible(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                pnl == 0 ? '-' : '\$${pnl.abs()}',
+                                style: GoogleFonts.robotoMono(
+                                  color: isPositive
+                                      ? AppTheme.positiveColor
+                                      : pnl < 0
+                                      ? AppTheme.negativeColor
+                                      : AppTheme.secondaryText,
+                                  fontSize: pnlFontSize,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: isSmallScreen ? 1 : 2),
+
+                          // 거래 수
+                          Text(
+                            '$trades trade${trades != 1 ? 's' : ''}',
+                            style: GoogleFonts.montserrat(
+                              color: AppTheme.secondaryText,
+                              fontSize: tradesFontSize,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
