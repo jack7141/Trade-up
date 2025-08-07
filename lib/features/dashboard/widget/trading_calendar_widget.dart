@@ -529,7 +529,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
               day.toString(),
               style: GoogleFonts.robotoMono(
                 color: AppTheme.secondaryText.withOpacity(0.5),
-                fontSize: dayFontSize * 0.9, // 20% 더 크게
+                fontSize: dayFontSize * 0.8, // 20% 더 크게
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -580,8 +580,8 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                   day.toString(),
                   style: GoogleFonts.robotoMono(
                     color: Colors.white,
-                    fontSize: (availableHeight * 0.35).clamp(16.0, 26.0),
-                    fontWeight: FontWeight.bold,
+                    fontSize: (availableHeight * 0.7).clamp(1.0, 8.0),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
 
@@ -604,11 +604,11 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                                   : '\$${tradingDay.pnl}',
                               style: GoogleFonts.robotoMono(
                                 color: Colors.white,
-                                fontSize: (availableHeight * 0.32).clamp(
-                                  14.0,
-                                  22.0,
+                                fontSize: (availableHeight * 0.4).clamp(
+                                  16.0,
+                                  28.0,
                                 ),
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w400,
                               ),
                               maxLines: 1,
                             ),
@@ -668,9 +668,9 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                                         : '\$${tradingDay.pnl}'),
                               style: GoogleFonts.robotoMono(
                                 color: Colors.white,
-                                fontSize: (availableHeight * 0.4).clamp(
-                                  12.0,
-                                  18.0,
+                                fontSize: (availableHeight * 0.45).clamp(
+                                  14.0,
+                                  22.0,
                                 ),
                                 fontWeight: FontWeight.bold,
                               ),
