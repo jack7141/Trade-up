@@ -55,33 +55,24 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             // 헤더
             _buildHeader(isCompact, isFullCalendarScreen),
-            SizedBox(height: isCompact ? 16 : 20),
+            SizedBox(height: isCompact ? 12 : 16),
 
-            // 캘린더와 주간 요약 (반응형) - 컨테이너 크기 제한
+            // 캘린더와 주간 요약 (반응형) - 공백 제거
             if (isCompact)
               // 모바일: 세로 배치
-              Flexible(
-                child: Column(
-                  children: [
-                    Flexible(
-                      flex: 4,
-                      child: _buildCalendar(isCompact, isFullCalendarScreen),
-                    ),
-                    if (!isFullCalendarScreen) ...[
-                      const SizedBox(height: 8),
-                      Flexible(
-                        flex: 1,
-                        child: _buildWeeklySummary(
-                          isCompact,
-                          isFullCalendarScreen,
-                        ),
-                      ),
-                    ],
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildCalendar(isCompact, isFullCalendarScreen),
+                  if (!isFullCalendarScreen) ...[
+                    const SizedBox(height: 8),
+                    _buildWeeklySummary(isCompact, isFullCalendarScreen),
                   ],
-                ),
+                ],
               )
             else
               // 데스크톱/태블릿: 가로 배치
@@ -392,6 +383,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
     ).weekday;
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         // 요일 헤더 - 동적 크기
         LayoutBuilder(
@@ -421,7 +413,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
             );
           },
         ),
-        SizedBox(height: isFullCalendarScreen ? 16 : 12),
+        SizedBox(height: isFullCalendarScreen ? 12 : 8),
 
         // 캘린더 그리드 - 동적 크기 계산
         LayoutBuilder(
@@ -455,10 +447,20 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
             );
 
             return Column(
+              mainAxisSize: MainAxisSize.min,
               children: List.generate(6, (weekIndex) {
+                // 빈 주는 건너뛰기
+                final weekHasDays = List.generate(7, (dayIndex) {
+                  final dayNumber =
+                      weekIndex * 7 + dayIndex - firstDayOfWeek + 2;
+                  return dayNumber >= 1 && dayNumber <= daysInMonth;
+                }).any((hasDay) => hasDay);
+
+                if (!weekHasDays) return const SizedBox.shrink();
+
                 return Padding(
                   padding: EdgeInsets.only(
-                    bottom: isFullCalendarScreen ? 6 : 4,
+                    bottom: isFullCalendarScreen ? 3 : 2,
                   ),
                   child: Row(
                     children: List.generate(7, (dayIndex) {
@@ -481,7 +483,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                     }),
                   ),
                 );
-              }),
+              }).where((widget) => widget is! SizedBox).toList(),
             );
           },
         ),
@@ -527,7 +529,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
               day.toString(),
               style: GoogleFonts.robotoMono(
                 color: AppTheme.secondaryText.withOpacity(0.5),
-                fontSize: dayFontSize,
+                fontSize: dayFontSize * 0.9, // 20% 더 크게
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -578,7 +580,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                   day.toString(),
                   style: GoogleFonts.robotoMono(
                     color: Colors.white,
-                    fontSize: (availableHeight * 0.32).clamp(14.0, 22.0),
+                    fontSize: (availableHeight * 0.35).clamp(16.0, 26.0),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -602,9 +604,9 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                                   : '\$${tradingDay.pnl}',
                               style: GoogleFonts.robotoMono(
                                 color: Colors.white,
-                                fontSize: (availableHeight * 0.28).clamp(
-                                  12.0,
-                                  18.0,
+                                fontSize: (availableHeight * 0.32).clamp(
+                                  14.0,
+                                  22.0,
                                 ),
                                 fontWeight: FontWeight.bold,
                               ),
@@ -614,14 +616,14 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                         ),
 
                         // 거래 수 (공간이 충분할 때만)
-                        if (availableHeight > 70)
+                        if (availableHeight > 60)
                           Text(
                             '${tradingDay.trades} trade${tradingDay.trades > 1 ? 's' : ''}',
                             style: GoogleFonts.montserrat(
                               color: Colors.white.withOpacity(0.9),
-                              fontSize: (availableHeight * 0.22).clamp(
-                                10.0,
-                                16.0,
+                              fontSize: (availableHeight * 0.25).clamp(
+                                11.0,
+                                18.0,
                               ),
                               fontWeight: FontWeight.w500,
                             ),
@@ -630,14 +632,14 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                           ),
 
                         // 승률 (공간이 매우 충분할 때만)
-                        if (availableHeight > 90 && tradingDay.winRate != null)
+                        if (availableHeight > 80 && tradingDay.winRate != null)
                           Text(
                             '${tradingDay.winRate!.toStringAsFixed(0)}%',
                             style: GoogleFonts.montserrat(
                               color: Colors.white.withOpacity(0.9),
-                              fontSize: (availableHeight * 0.2).clamp(
-                                9.0,
-                                14.0,
+                              fontSize: (availableHeight * 0.22).clamp(
+                                10.0,
+                                16.0,
                               ),
                               fontWeight: FontWeight.w500,
                             ),
@@ -666,9 +668,9 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                                         : '\$${tradingDay.pnl}'),
                               style: GoogleFonts.robotoMono(
                                 color: Colors.white,
-                                fontSize: (availableHeight * 0.35).clamp(
-                                  10.0,
-                                  16.0,
+                                fontSize: (availableHeight * 0.4).clamp(
+                                  12.0,
+                                  18.0,
                                 ),
                                 fontWeight: FontWeight.bold,
                               ),
@@ -678,14 +680,14 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                         ),
 
                         // 거래 수를 축약 형태로
-                        if (availableHeight > 45)
+                        if (availableHeight > 40)
                           Text(
                             '${tradingDay.trades}T',
                             style: GoogleFonts.montserrat(
                               color: Colors.white.withOpacity(0.9),
-                              fontSize: (availableHeight * 0.25).clamp(
-                                8.0,
-                                13.0,
+                              fontSize: (availableHeight * 0.28).clamp(
+                                9.0,
+                                15.0,
                               ),
                               fontWeight: FontWeight.w500,
                             ),
@@ -756,7 +758,7 @@ class _TradingCalendarWidgetState extends State<TradingCalendarWidget> {
                                 color: weekData.pnl >= 0
                                     ? AppTheme.positiveColor
                                     : AppTheme.negativeColor,
-                                fontSize: 10,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                               maxLines: 1,
