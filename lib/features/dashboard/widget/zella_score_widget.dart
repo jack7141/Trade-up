@@ -3,12 +3,15 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class ZellaScoreWidget extends StatelessWidget {
   const ZellaScoreWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -34,7 +37,7 @@ class ZellaScoreWidget extends StatelessWidget {
                 Icon(Icons.radar, color: AppTheme.accentColor, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Zella Score',
+                  l10n.zellaScore,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.primaryText,
                     fontSize: 18,
@@ -74,7 +77,7 @@ class ZellaScoreWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Your Zella Score',
+                        l10n.yourZellaScore,
                         style: GoogleFonts.montserrat(
                           color: AppTheme.secondaryText,
                           fontSize: 14,

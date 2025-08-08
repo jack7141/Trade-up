@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class DailyPnlChartWidget extends StatelessWidget {
   const DailyPnlChartWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -32,7 +35,7 @@ class DailyPnlChartWidget extends StatelessWidget {
                 Icon(Icons.bar_chart, color: AppTheme.accentColor, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Net daily P&L',
+                  l10n.netDailyPnl,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.primaryText,
                     fontSize: 18,

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class TradingActivityWidget extends StatelessWidget {
   const TradingActivityWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       child: Container(
@@ -23,14 +26,14 @@ class TradingActivityWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Trader Level',
+                  l10n.traderLevel,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.secondaryText,
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  'Novice Trader',
+                  l10n.noviceTrader,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.accentColor,
                     fontSize: 14,

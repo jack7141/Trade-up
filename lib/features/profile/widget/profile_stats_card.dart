@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class ProfileStatsCard extends StatelessWidget {
   const ProfileStatsCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
@@ -45,7 +48,7 @@ class ProfileStatsCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Trading Performance',
+                  l10n.tradingPerformance,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.primaryText,
                     fontSize: 16,
@@ -70,7 +73,7 @@ class ProfileStatsCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: _buildStatItem(
-                              'Total Trades',
+                              l10n.totalTrades,
                               '47',
                               Icons.swap_horiz,
                               AppTheme.secondaryText,
@@ -79,7 +82,7 @@ class ProfileStatsCard extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildStatItem(
-                              'Win Rate',
+                              l10n.winRate,
                               '68.1%',
                               Icons.trending_up,
                               AppTheme.positiveColor,
@@ -92,7 +95,7 @@ class ProfileStatsCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: _buildStatItem(
-                              'Total P&L',
+                              l10n.netPnl,
                               '+\$2,847',
                               Icons.account_balance_wallet,
                               AppTheme.positiveColor,
@@ -101,7 +104,7 @@ class ProfileStatsCard extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildStatItem(
-                              'Best Trade',
+                              l10n.bestTrade,
                               '+\$823',
                               Icons.star,
                               AppTheme.accentColor,
@@ -117,7 +120,7 @@ class ProfileStatsCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: _buildStatItem(
-                          'Total Trades',
+                          l10n.totalTrades,
                           '47',
                           Icons.swap_horiz,
                           AppTheme.secondaryText,
@@ -126,7 +129,7 @@ class ProfileStatsCard extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildStatItem(
-                          'Win Rate',
+                          l10n.winRate,
                           '68.1%',
                           Icons.trending_up,
                           AppTheme.positiveColor,
@@ -135,7 +138,7 @@ class ProfileStatsCard extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildStatItem(
-                          'Total P&L',
+                          l10n.netPnl,
                           '+\$2,847',
                           Icons.account_balance_wallet,
                           AppTheme.positiveColor,
@@ -144,7 +147,7 @@ class ProfileStatsCard extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildStatItem(
-                          'Best Trade',
+                          l10n.bestTrade,
                           '+\$823',
                           Icons.star,
                           AppTheme.accentColor,
@@ -176,7 +179,7 @@ class ProfileStatsCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Statistics are calculated from your trading history',
+                      l10n.statisticsCalculated,
                       style: GoogleFonts.montserrat(
                         color: AppTheme.secondaryText,
                         fontSize: 11,

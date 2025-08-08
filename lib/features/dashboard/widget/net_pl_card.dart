@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class NetPlCardWidget extends StatelessWidget {
   const NetPlCardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -37,7 +40,7 @@ class NetPlCardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Net P/L',
+                  l10n.netPnl,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.secondaryText,
                     fontSize: 14,
@@ -53,7 +56,7 @@ class NetPlCardWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    '+1.25% (24h)',
+                    l10n.dailyChange24h,
                     style: GoogleFonts.montserrat(
                       color: AppTheme.positiveColor,
                       fontSize: 12,

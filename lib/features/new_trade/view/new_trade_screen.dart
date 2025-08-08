@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 // --- 데이터 모델 (개선) ---
 class Execution {
@@ -1504,6 +1505,8 @@ class _NewTradeScreenState extends State<NewTradeScreen>
   }
 
   Widget _buildEmptyState(double screenWidth) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SizedBox(
       height: math.max(200.0, math.min(300.0, screenWidth * 0.4)),
       child: Center(
@@ -1519,7 +1522,7 @@ class _NewTradeScreenState extends State<NewTradeScreen>
               height: math.max(12.0, math.min(16.0, screenWidth * 0.03)),
             ),
             Text(
-              'No trades yet',
+              l10n.noTradesYet,
               style: GoogleFonts.montserrat(
                 color: AppTheme.secondaryText,
                 fontSize: math.max(14.0, math.min(18.0, screenWidth * 0.04)),
@@ -1528,7 +1531,7 @@ class _NewTradeScreenState extends State<NewTradeScreen>
             ),
             SizedBox(height: math.max(6.0, math.min(8.0, screenWidth * 0.02))),
             Text(
-              'Start trading to see your history',
+              l10n.startTradingHistory,
               style: GoogleFonts.montserrat(
                 color: AppTheme.secondaryText.withOpacity(0.7),
                 fontSize: math.max(12.0, math.min(14.0, screenWidth * 0.03)),

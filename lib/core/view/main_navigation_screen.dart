@@ -1,8 +1,10 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
 import 'package:trade_up/core/widget/nav_tab.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const String routeName = "main";
@@ -82,6 +84,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   Widget _buildBottomAppBar() {
+    final l10n = AppLocalizations.of(context)!;
     // 화면 크기에 비례한 값들 계산
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -107,46 +110,54 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            NavTab(
-              index: 0,
-              icon: Icons.dashboard_outlined,
-              selectedIcon: Icons.dashboard,
-              label: 'Dashboard',
-              isSelected: _selectedIndex == 0,
-              onTap: () => _onTap(0),
-              screenWidth: screenWidth,
+            Expanded(
+              child: NavTab(
+                index: 0,
+                icon: Icons.dashboard_outlined,
+                selectedIcon: Icons.dashboard,
+                label: l10n.dashboard,
+                isSelected: _selectedIndex == 0,
+                onTap: () => _onTap(0),
+                screenWidth: screenWidth,
+              ),
             ),
-            NavTab(
-              index: 1,
-              icon: Icons.history_outlined,
-              selectedIcon: Icons.history,
-              label: 'History',
-              isSelected: _selectedIndex == 1,
-              onTap: () => _onTap(1),
-              screenWidth: screenWidth,
+            Expanded(
+              child: NavTab(
+                index: 1,
+                icon: Icons.history_outlined,
+                selectedIcon: Icons.history,
+                label: l10n.tradeHistory,
+                isSelected: _selectedIndex == 1,
+                onTap: () => _onTap(1),
+                screenWidth: screenWidth,
+              ),
             ),
             SizedBox(
               width: math.max(50.0, math.min(80.0, screenWidth * 0.15)),
             ), // FloatingActionButton을 위한 비례 공간
-            NavTab(
-              index: 3,
-              icon: Icons.calculate_outlined,
-              selectedIcon: Icons.calculate,
-              label: 'Tools',
-              isSelected: _selectedIndex == 3,
-              onTap: () => _onTap(3),
-              screenWidth: screenWidth,
+            Expanded(
+              child: NavTab(
+                index: 3,
+                icon: Icons.calculate_outlined,
+                selectedIcon: Icons.calculate,
+                label: l10n.tools,
+                isSelected: _selectedIndex == 3,
+                onTap: () => _onTap(3),
+                screenWidth: screenWidth,
+              ),
             ),
-            NavTab(
-              index: 4,
-              icon: Icons.person_outline,
-              selectedIcon: Icons.person,
-              label: 'Profile',
-              isSelected: _selectedIndex == 4,
-              onTap: () => _onTap(4),
-              screenWidth: screenWidth,
+            Expanded(
+              child: NavTab(
+                index: 4,
+                icon: Icons.person_outline,
+                selectedIcon: Icons.person,
+                label: l10n.profile,
+                isSelected: _selectedIndex == 4,
+                onTap: () => _onTap(4),
+                screenWidth: screenWidth,
+              ),
             ),
           ],
         ),

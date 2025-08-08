@@ -3,12 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
 import 'package:trade_up/features/tools/widget/tool_category_card.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class ToolsScreen extends ConsumerWidget {
   const ToolsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
@@ -22,7 +25,7 @@ class ToolsScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Trading Tools',
+                      l10n.tools,
                       style: GoogleFonts.montserrat(
                         color: AppTheme.primaryText,
                         fontSize: 24,
@@ -47,27 +50,27 @@ class ToolsScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ToolCategoryCard(
-                  title: 'Calculators',
+                  title: l10n.calculators,
                   subtitle: 'Essential trading calculation tools',
                   icon: Icons.calculate,
                   iconColor: AppTheme.accentColor,
-                  tools: const [
+                  tools: [
                     ToolItem(
-                      title: 'Kelly Criterion Calculator',
+                      title: l10n.kellyCriterionCalculator,
                       description:
                           'Calculate optimal position size using Kelly formula',
                       icon: Icons.psychology,
                       route: '/tools/kelly-criterion',
                     ),
                     ToolItem(
-                      title: 'Position Size Calculator',
+                      title: l10n.positionSizeCalculator,
                       description:
                           'Calculate optimal position size based on risk',
                       icon: Icons.pie_chart,
                       route: '/tools/position-size',
                     ),
                     ToolItem(
-                      title: 'Profit/Loss Calculator',
+                      title: l10n.profitLossCalculator,
                       description: 'Calculate potential profits and losses',
                       icon: Icons.trending_up,
                       route: '/tools/profit-loss',
@@ -84,8 +87,8 @@ class ToolsScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ToolCategoryCard(
-                  title: 'Portfolio Management',
-                  subtitle: 'Coming soon - Advanced portfolio tools',
+                  title: l10n.portfolioManagement,
+                  subtitle: '${l10n.comingSoon} - Advanced portfolio tools',
                   icon: Icons.folder,
                   iconColor: AppTheme.secondaryText,
                   tools: const [
@@ -122,8 +125,8 @@ class ToolsScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ToolCategoryCard(
-                  title: 'Market Analysis',
-                  subtitle: 'Coming soon - Market insights & data',
+                  title: l10n.marketAnalysis,
+                  subtitle: '${l10n.comingSoon} - Market insights & data',
                   icon: Icons.analytics,
                   iconColor: AppTheme.secondaryText,
                   tools: const [

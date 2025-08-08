@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class MetricsWidget extends StatelessWidget {
   const MetricsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       child: GridView.count(
@@ -17,15 +20,15 @@ class MetricsWidget extends StatelessWidget {
         mainAxisSpacing: 12,
         childAspectRatio: 1.5,
         children: [
-          _MetricItem(title: 'Win Rate', value: '62.5%'),
-          _MetricItem(title: 'Avg. P/L', value: '+\$89.8', isPositive: true),
+          _MetricItem(title: l10n.winRate, value: '62.5%'),
+          _MetricItem(title: l10n.avgPnl, value: '+\$89.8', isPositive: true),
           _MetricItem(
-            title: 'Largest Win',
+            title: l10n.largestWin,
             value: '+\$450.2',
             isPositive: true,
           ),
           _MetricItem(
-            title: 'Largest Loss',
+            title: l10n.largestLoss,
             value: '-\$120.5',
             isPositive: false,
           ),

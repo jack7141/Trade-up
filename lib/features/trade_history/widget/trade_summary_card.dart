@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class TradeSummaryCard extends StatelessWidget {
   const TradeSummaryCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -32,7 +35,7 @@ class TradeSummaryCard extends StatelessWidget {
                 Icon(Icons.analytics, color: AppTheme.accentColor, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'This Month Summary',
+                  l10n.thisMonthSummary,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.primaryText,
                     fontSize: 16,
@@ -56,7 +59,7 @@ class TradeSummaryCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: _buildStatItem(
-                              'Total Trades',
+                              l10n.totalTrades,
                               '15',
                               Icons.swap_horiz,
                             ),
@@ -64,7 +67,7 @@ class TradeSummaryCard extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildStatItem(
-                              'Win Rate',
+                              l10n.winRate,
                               '73.3%',
                               Icons.trending_up,
                             ),
@@ -76,7 +79,7 @@ class TradeSummaryCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: _buildStatItem(
-                              'Profit',
+                              l10n.profit,
                               '+\$1,259',
                               Icons.add_circle,
                               AppTheme.positiveColor,
@@ -85,7 +88,7 @@ class TradeSummaryCard extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildStatItem(
-                              'Loss',
+                              l10n.loss,
                               '-\$526',
                               Icons.remove_circle,
                               AppTheme.negativeColor,
@@ -94,7 +97,7 @@ class TradeSummaryCard extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      _buildNetProfitCard(),
+                      _buildNetProfitCard(context),
                     ],
                   );
                 } else {
@@ -105,7 +108,7 @@ class TradeSummaryCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: _buildStatItem(
-                              'Total Trades',
+                              l10n.totalTrades,
                               '15',
                               Icons.swap_horiz,
                             ),
@@ -113,7 +116,7 @@ class TradeSummaryCard extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildStatItem(
-                              'Win Rate',
+                              l10n.winRate,
                               '73.3%',
                               Icons.trending_up,
                             ),
@@ -121,7 +124,7 @@ class TradeSummaryCard extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildStatItem(
-                              'Profit',
+                              l10n.profit,
                               '+\$1,259',
                               Icons.add_circle,
                               AppTheme.positiveColor,
@@ -130,7 +133,7 @@ class TradeSummaryCard extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildStatItem(
-                              'Loss',
+                              l10n.loss,
                               '-\$526',
                               Icons.remove_circle,
                               AppTheme.negativeColor,
@@ -139,7 +142,7 @@ class TradeSummaryCard extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      _buildNetProfitCard(),
+                      _buildNetProfitCard(context),
                     ],
                   );
                 }
@@ -198,7 +201,7 @@ class TradeSummaryCard extends StatelessWidget {
     );
   }
 
-  Widget _buildNetProfitCard() {
+  Widget _buildNetProfitCard(BuildContext context) {
     const netProfit = 733;
     final isPositive = netProfit >= 0;
 
@@ -226,7 +229,7 @@ class TradeSummaryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Net P&L',
+                AppLocalizations.of(context)!.netPnl,
                 style: GoogleFonts.montserrat(
                   color: AppTheme.secondaryText,
                   fontSize: 12,
@@ -256,7 +259,9 @@ class TradeSummaryCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
-              isPositive ? 'Profit' : 'Loss',
+              isPositive
+                  ? AppLocalizations.of(context)!.profit
+                  : AppLocalizations.of(context)!.loss,
               style: GoogleFonts.montserrat(
                 color: Colors.white,
                 fontSize: 10,

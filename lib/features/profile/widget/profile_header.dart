@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -14,7 +17,7 @@ class ProfileHeader extends StatelessWidget {
         children: [
           // 페이지 제목
           Text(
-            'Profile',
+            l10n.profile,
             style: GoogleFonts.montserrat(
               color: AppTheme.primaryText,
               fontSize: 24,

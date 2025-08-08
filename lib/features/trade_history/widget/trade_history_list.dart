@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trade_up/core/theme/app_theme.dart';
 import 'package:trade_up/features/trade_history/model/trade_record.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class TradeHistoryList extends StatelessWidget {
   final String period;
@@ -24,7 +25,7 @@ class TradeHistoryList extends StatelessWidget {
     final filteredTrades = _getFilteredTrades();
 
     if (filteredTrades.isEmpty) {
-      return _buildEmptyState();
+      return _buildEmptyState(context);
     }
 
     return Padding(
@@ -292,7 +293,9 @@ class TradeHistoryList extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.all(32),
       child: Center(
@@ -305,7 +308,7 @@ class TradeHistoryList extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'No trades found',
+              l10n.noTradesFound,
               style: GoogleFonts.montserrat(
                 color: AppTheme.secondaryText,
                 fontSize: 16,
@@ -314,7 +317,7 @@ class TradeHistoryList extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Start recording your first trade!',
+              l10n.startRecordingTrade,
               style: GoogleFonts.montserrat(
                 color: AppTheme.secondaryText.withOpacity(0.7),
                 fontSize: 12,

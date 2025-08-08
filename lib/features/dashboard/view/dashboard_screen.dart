@@ -8,6 +8,7 @@ import 'package:trade_up/features/dashboard/widget/metric_card.dart';
 import 'package:trade_up/features/dashboard/widget/net_pl_card.dart';
 import 'package:trade_up/features/dashboard/widget/ranking_badget.dart';
 import 'package:trade_up/features/dashboard/widget/recent_trade.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   static const String routeName = '/';
@@ -21,6 +22,7 @@ class DashboardScreen extends ConsumerStatefulWidget {
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -47,23 +49,21 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
             // 4. AI 인사이트 (액션 가능한 정보)
             SliverToBoxAdapter(
-              child: _buildSectionHeader(title: 'AI Coach Insight'),
+              child: _buildSectionHeader(title: l10n.aiCoachInsight),
             ),
             SliverToBoxAdapter(child: _buildAiInsightCard()),
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
             // 5. 거래 도구 (빠른 액세스)
-            SliverToBoxAdapter(
-              child: _buildSectionHeader(title: 'Trading Tools'),
-            ),
+            SliverToBoxAdapter(child: _buildSectionHeader(title: l10n.tools)),
             SliverToBoxAdapter(child: _buildTradingTools()),
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
             // 6. 최근 거래 (축약된 버전)
             SliverToBoxAdapter(
               child: _buildSectionHeader(
-                title: 'Recent Trades',
-                actionText: 'View All',
+                title: l10n.recentTrades,
+                actionText: l10n.viewAll,
                 onActionTap: () {},
               ),
             ),
@@ -76,6 +76,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildHeader() {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       child: Row(
@@ -110,7 +112,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           // --- 수정된 부분: 랭킹 배지와 프로필 아이콘을 함께 배치 ---
           Row(
             children: [
-              RankingBadge(rank: 'Novice', icon: Icons.military_tech_outlined),
+              RankingBadge(
+                rank: l10n.novice,
+                icon: Icons.military_tech_outlined,
+              ),
               const SizedBox(width: 12),
               Container(
                 width: 36,
@@ -166,6 +171,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget _buildTradingTools() {
     // 임시 데이터. 실제로는 ViewModel에서 가져와야 합니다.
     const double kellyPercentage = 18.4;
+    final l10n = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -212,7 +218,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Kelly Criterion',
+                      l10n.kellyCriterionCalculator,
                       style: GoogleFonts.montserrat(
                         color: AppTheme.primaryText,
                         fontSize: 16,
@@ -235,7 +241,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'Optimal Risk',
+                    l10n.optimalRisk,
                     style: GoogleFonts.montserrat(
                       color: AppTheme.secondaryText,
                       fontSize: 10,
@@ -260,6 +266,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildAiInsightCard() {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -281,7 +289,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  "Today's Coaching",
+                  l10n.todaysCoaching,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.accentColor,
                     fontSize: 14,
@@ -292,7 +300,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              "Your win rate with the '#Breakout' strategy is 78%. Keep capitalizing on this pattern.",
+              l10n.breakoutStrategyTip,
               style: GoogleFonts.montserrat(
                 color: AppTheme.secondaryText.withOpacity(0.9),
                 fontSize: 14,
@@ -307,7 +315,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   // TODO: 더 많은 인사이트 보기 기능
                 },
                 child: Text(
-                  "Learn More",
+                  l10n.learnMore,
                   style: GoogleFonts.montserrat(
                     color: AppTheme.accentColor,
                     fontWeight: FontWeight.w600,
@@ -322,6 +330,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildAdvancedFeaturesCard() {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -334,7 +344,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         child: Column(
           children: [
             Text(
-              'Advanced Analytics',
+              l10n.advancedAnalytics,
               style: GoogleFonts.montserrat(
                 color: AppTheme.primaryText,
                 fontSize: 16,
@@ -343,7 +353,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Explore detailed performance analysis, trading calendar, and Zella Score.',
+              l10n.exploreDetailedAnalysis,
               style: GoogleFonts.montserrat(
                 color: AppTheme.secondaryText,
                 fontSize: 14,
@@ -355,7 +365,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               children: [
                 Expanded(
                   child: _buildFeatureButton(
-                    'Trading Calendar',
+                    l10n.tradingCalendar,
                     Icons.calendar_month,
                     () {
                       context.push('/full-calendar');
@@ -365,7 +375,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: _buildFeatureButton(
-                    'Performance Analysis',
+                    l10n.performanceAnalysis,
                     Icons.analytics,
                     () {
                       context.push('/performance-analysis');

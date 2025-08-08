@@ -5,6 +5,7 @@ import 'package:trade_up/core/theme/app_theme.dart';
 import 'package:trade_up/features/trade_history/widget/trade_history_filter_bar.dart';
 import 'package:trade_up/features/trade_history/widget/trade_history_list.dart';
 import 'package:trade_up/features/trade_history/widget/trade_summary_card.dart';
+import 'package:trade_up/l10n/app_localizations.dart';
 
 class TradeHistoryScreen extends ConsumerStatefulWidget {
   static const String routeName = 'history';
@@ -57,6 +58,8 @@ class _TradeHistoryScreenState extends ConsumerState<TradeHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
@@ -71,7 +74,7 @@ class _TradeHistoryScreenState extends ConsumerState<TradeHistoryScreen> {
                     Icon(Icons.history, color: AppTheme.accentColor, size: 24),
                     const SizedBox(width: 12),
                     Text(
-                      'Trading History',
+                      l10n.tradeHistory,
                       style: GoogleFonts.montserrat(
                         color: AppTheme.primaryText,
                         fontSize: 24,

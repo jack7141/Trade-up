@@ -1,0 +1,140 @@
+{
+  "@@locale": "en",
+  "appTitle": "TradeUp",
+  "dashboard": "Dashboard",
+  "tradeHistory": "Trade History",
+  "newTrade": "New Trade",
+  "tools": "Tools",
+  "profile": "Profile",
+  
+  "welcome": "Welcome",
+  "totalBalance": "Total Balance",
+  "todayPnl": "Today's P&L",
+  "weeklyPnl": "Weekly P&L",
+  "monthlyPnl": "Monthly P&L",
+  "winRate": "Win Rate",
+  
+  "thisMonth": "This Month",
+  "lastMonth": "Last Month",
+  "thisWeek": "This Week",
+  "today": "Today",
+  "threeMonths": "3 Months",
+  "all": "All",
+  "customDate": "Custom Date",
+  
+  "period": "Period",
+  "type": "Type",
+  "sort": "Sort",
+  "date": "Date",
+  "profit": "Profit",
+  "loss": "Loss",
+  
+  "totalTrades": "Total Trades",
+  "netPnl": "Net P&L",
+  "bestTrade": "Best Trade",
+  
+  "entry": "Entry",
+  "exit": "Exit",
+  "size": "Size",
+  "trades": "trades",
+  
+  "calculators": "Calculators",
+  "kellyCriterionCalculator": "Kelly Criterion Calculator",
+  "positionSizeCalculator": "Position Size Calculator",
+  "profitLossCalculator": "Profit/Loss Calculator",
+  
+  "portfolioManagement": "Portfolio Management",
+  "marketAnalysis": "Market Analysis",
+  "comingSoon": "Coming Soon",
+  
+  "personalInformation": "Personal Information",
+  "security": "Security",
+  "notifications": "Notifications",
+  "tradingPreferences": "Trading Preferences",
+  "exportData": "Export Data",
+  "backupSync": "Backup & Sync",
+  "helpCenter": "Help Center",
+  "sendFeedback": "Send Feedback",
+  "about": "About",
+  "logOut": "Log Out",
+  
+  "account": "Account",
+  "trading": "Trading",
+  "support": "Support",
+  
+  "tradingPerformance": "Trading Performance",
+  "statisticsCalculated": "Statistics are calculated from your trading history",
+  
+  "updateProfileDetails": "Update your profile details",
+  "passwordTwoFactor": "Password, 2FA, and more",
+  "manageAlerts": "Manage your alerts",
+  "riskSettingsAlerts": "Risk settings, alerts, and more",
+  "downloadTradingHistory": "Download your trading history",
+  "cloudBackupSettings": "Cloud backup settings",
+  "faqsAndGuides": "FAQs and guides",
+  "helpUsImprove": "Help us improve TradeUp",
+  "versionLegalInfo": "Version and legal information",
+  
+  "language": "Language",
+  "languageSettings": "Language Settings",
+  "selectLanguage": "Select Language",
+  "changeLanguage": "Change your preferred language",
+  
+  "english": "English",
+  "korean": "한국어",
+  "japanese": "日本語",
+  "vietnamese": "Tiếng Việt",
+  "turkish": "Türkçe",
+  
+  "comingSoonFeature": "Coming Soon",
+  "comingSoonMessage": "{feature} is coming in a future update!",
+  "@comingSoonMessage": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "logOutConfirm": "Are you sure you want to log out?",
+  "cancel": "Cancel",
+  "ok": "OK",
+  
+  "professionalTradingTool": "Professional trading journal and analysis tool.",
+  
+  "aiCoachInsight": "AI Coach Insight",
+  "recentTrades": "Recent Trades",
+  "viewAll": "View All",
+  "novice": "Novice",
+  "optimalRisk": "Optimal Risk",
+  "advancedAnalytics": "Advanced Analytics",
+  "tradingCalendar": "Trading Calendar",
+  "performanceAnalysis": "Performance Analysis",
+  "exploreDetailedAnalysis": "Explore detailed performance analysis, trading calendar, and Zella Score.",
+  
+  "netDailyPnl": "Net daily P&L",
+  "netPnl": "Net P/L",
+  "winRate": "Win Rate",
+  "avgPnl": "Avg. P/L",
+  "largestWin": "Largest Win",
+  "largestLoss": "Largest Loss",
+  "dailyChange24h": "+1.25% (24h)",
+  
+  "todaysCoaching": "Today's Coaching",
+  "learnMore": "Learn More",
+  "breakoutStrategyTip": "Your win rate with the '#Breakout' strategy is 78%. Keep capitalizing on this pattern.",
+  "noTradesYet": "No trades yet",
+  "startTradingHistory": "Start trading to see your history",
+  "noTradesFound": "No trades found",
+  "startRecordingTrade": "Start recording your first trade!",
+  
+  "zellaScore": "Zella Score",
+  "yourZellaScore": "Your Zella Score",
+  "traderLevel": "Trader Level",
+  "noviceTrader": "Novice Trader",
+  
+  "thisMonthSummary": "This Month Summary",
+  "totalTrades": "Total Trades",
+  "profit": "Profit",
+  "loss": "Loss"
+}
