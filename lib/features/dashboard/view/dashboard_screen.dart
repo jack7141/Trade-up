@@ -32,10 +32,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             SliverToBoxAdapter(child: _buildHeader()),
             // 1. 총 손익 (가장 중요)
             SliverToBoxAdapter(child: const NetPlCardWidget()),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
             // 2. 핵심 지표
             SliverToBoxAdapter(child: MetricsWidget()),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+            // 고급 기능들은 별도 탭/페이지로 이동
+            SliverToBoxAdapter(child: _buildAdvancedFeaturesCard()),
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
             // 3. Daily P&L (간단한 차트)
@@ -65,12 +68,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
             ),
             SliverToBoxAdapter(child: const RecentTradeWidget()),
-
-            // 고급 기능들은 별도 탭/페이지로 이동
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
-            SliverToBoxAdapter(child: _buildAdvancedFeaturesCard()),
-
-            const SliverToBoxAdapter(child: SizedBox(height: 100)), // 하단 여백
+            const SliverToBoxAdapter(child: SizedBox(height: 32)), // 하단 여백
           ],
         ),
       ),
