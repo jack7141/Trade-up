@@ -8,6 +8,7 @@ import 'package:trade_up/features/dashboard/view/dashboard_screen.dart';
 import 'package:trade_up/features/dashboard/view/full_calendar_screen.dart';
 import 'package:trade_up/features/dashboard/view/performance_analysis_screen.dart';
 import 'package:trade_up/features/new_trade/view/new_trade_screen.dart';
+import 'package:trade_up/features/profile/view/profile_screen.dart';
 import 'package:trade_up/features/tools/view/calculators/kelly_criterion_calculator_screen.dart';
 import 'package:trade_up/features/tools/view/calculators/position_size_calculator_screen.dart';
 import 'package:trade_up/features/tools/view/calculators/profit_loss_calculator_screen.dart';
@@ -186,7 +187,7 @@ final router = GoRouter(
         GoRoute(
           path: '/profile',
           name: 'profile',
-          builder: (context, state) => const DashboardScreen(),
+          builder: (context, state) => const ProfileScreen(),
         ),
       ],
     ),
