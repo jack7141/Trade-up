@@ -8,6 +8,10 @@ import 'package:trade_up/features/dashboard/view/dashboard_screen.dart';
 import 'package:trade_up/features/dashboard/view/full_calendar_screen.dart';
 import 'package:trade_up/features/dashboard/view/performance_analysis_screen.dart';
 import 'package:trade_up/features/new_trade/view/new_trade_screen.dart';
+import 'package:trade_up/features/tools/view/calculators/kelly_criterion_calculator_screen.dart';
+import 'package:trade_up/features/tools/view/calculators/position_size_calculator_screen.dart';
+import 'package:trade_up/features/tools/view/calculators/profit_loss_calculator_screen.dart';
+import 'package:trade_up/features/tools/view/tools_screen.dart';
 import 'package:trade_up/features/trade_history/view/trade_history_screen.dart';
 
 import '../common/exceptions.dart';
@@ -154,7 +158,29 @@ final router = GoRouter(
         GoRoute(
           path: '/tools',
           name: 'tools',
-          builder: (context, state) => const DashboardScreen(),
+          builder: (context, state) => const ToolsScreen(),
+          routes: [
+            // Kelly Criterion Calculator
+            GoRoute(
+              path: '/kelly-criterion',
+              name: 'kelly-criterion-calculator',
+              builder: (context, state) =>
+                  const KellyCriterionCalculatorScreen(),
+            ),
+            // Position Size Calculator
+            GoRoute(
+              path: '/position-size',
+              name: 'position-size-calculator',
+              builder: (context, state) => const PositionSizeCalculatorScreen(),
+            ),
+            // Profit/Loss Calculator
+            GoRoute(
+              path: '/profit-loss',
+              name: 'profit-loss-calculator',
+              builder: (context, state) => const ProfitLossCalculatorScreen(),
+            ),
+            // 다른 계산기들은 곧 추가될 예정
+          ],
         ),
         // Profile (프로필)
         GoRoute(

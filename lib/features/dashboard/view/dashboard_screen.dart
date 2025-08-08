@@ -170,7 +170,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
-        // onTap: () => _navigateTo(AppScreen.kellySimulator),
+        onTap: () => context.go('/tools'),
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -212,7 +212,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Position Sizing',
+                      'Kelly Criterion',
                       style: GoogleFonts.montserrat(
                         color: AppTheme.primaryText,
                         fontSize: 16,
@@ -221,7 +221,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Find your optimal risk per trade.',
+                      'Optimal position sizing formula.',
                       style: GoogleFonts.montserrat(
                         color: AppTheme.secondaryText,
                         fontSize: 12,
