@@ -85,27 +85,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         children: [
           Row(
             children: [
-              Container(
-                width: 36,
+              Image.asset(
+                'assets/images/logo.png',
                 height: 36,
-                decoration: BoxDecoration(
-                  color: AppTheme.accentColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.trending_up,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'TradeUp',
-                style: GoogleFonts.montserrat(
-                  color: AppTheme.primaryText,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+                fit: BoxFit.contain,
               ),
             ],
           ),
