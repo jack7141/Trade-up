@@ -49,12 +49,15 @@ class DailyPnlChartWidget extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // 차트
+            // 차트 (Y축 라벨 공간 확보)
             SizedBox(
               height: 200,
-              child: CustomPaint(
-                painter: BarChartPainter(),
-                child: Container(),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 40), // Y축 라벨 공간 확보
+                child: CustomPaint(
+                  painter: BarChartPainter(),
+                  child: Container(),
+                ),
               ),
             ),
 
@@ -165,9 +168,9 @@ class BarChartPainter extends CustomPainter {
       canvas.drawLine(Offset(0, y1), Offset(size.width, y1), gridPaint);
       canvas.drawLine(Offset(0, y2), Offset(size.width, y2), gridPaint);
 
-      // Y축 값 라벨
-      _drawYAxisLabel(canvas, (maxValue * i / steps), -10, y1);
-      _drawYAxisLabel(canvas, -(maxValue * i / steps), -10, y2);
+      // Y축 값 라벨 (컨테이너 안쪽에 위치)
+      _drawYAxisLabel(canvas, (maxValue * i / steps), -35, y1);
+      _drawYAxisLabel(canvas, -(maxValue * i / steps), -35, y2);
     }
   }
 
@@ -208,12 +211,13 @@ class BarChartPainter extends CustomPainter {
         ),
       ),
       textDirection: TextDirection.ltr,
+      textAlign: TextAlign.right,
     );
 
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(x - textPainter.width, y - textPainter.height / 2),
+      Offset(x, y - textPainter.height / 2), // x 위치 조정
     );
   }
 

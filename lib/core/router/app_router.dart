@@ -8,6 +8,7 @@ import 'package:trade_up/features/dashboard/view/dashboard_screen.dart';
 import 'package:trade_up/features/dashboard/view/full_calendar_screen.dart';
 import 'package:trade_up/features/dashboard/view/performance_analysis_screen.dart';
 import 'package:trade_up/features/new_trade/view/new_trade_screen.dart';
+import 'package:trade_up/features/trade_history/view/trade_history_screen.dart';
 
 import '../common/exceptions.dart';
 
@@ -128,8 +129,8 @@ final router = GoRouter(
         // History (거래 히스토리)
         GoRoute(
           path: '/history',
-          name: 'history',
-          builder: (context, state) => const DashboardScreen(),
+          name: TradeHistoryScreen.routeName,
+          builder: (context, state) => const TradeHistoryScreen(),
         ),
         // Add Trade (거래 추가)
         GoRoute(
