@@ -84,7 +84,7 @@ class LanguageSettingsScreen extends ConsumerWidget {
               ),
             ),
 
-            // 언어 목록
+            // 언어 목록 (3개 언어만)
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -111,26 +111,6 @@ class LanguageSettingsScreen extends ConsumerWidget {
                         _buildLanguageOption(
                           context,
                           ref,
-                          'ko',
-                          '한국어',
-                          'Korean',
-                          Icons.language,
-                          currentLocale == 'ko',
-                        ),
-                        _buildDivider(),
-                        _buildLanguageOption(
-                          context,
-                          ref,
-                          'ja',
-                          '日본語',
-                          'Japanese',
-                          Icons.language,
-                          currentLocale == 'ja',
-                        ),
-                        _buildDivider(),
-                        _buildLanguageOption(
-                          context,
-                          ref,
                           'vi',
                           'Tiếng Việt',
                           'Vietnamese',
@@ -141,11 +121,11 @@ class LanguageSettingsScreen extends ConsumerWidget {
                         _buildLanguageOption(
                           context,
                           ref,
-                          'tr',
-                          'Türkçe',
-                          'Turkish',
+                          'ko',
+                          '한국어',
+                          'Korean',
                           Icons.language,
-                          currentLocale == 'tr',
+                          currentLocale == 'ko',
                           isLast: true,
                         ),
                       ],
