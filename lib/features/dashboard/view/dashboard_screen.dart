@@ -85,10 +85,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         children: [
           Row(
             children: [
-              Image.asset(
-                'assets/images/logo.png',
-                height: 36,
-                fit: BoxFit.contain,
+              const Text(
+                'TradeUp',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
