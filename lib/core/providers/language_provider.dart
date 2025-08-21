@@ -21,7 +21,7 @@ class LanguageNotifier extends StateNotifier<String> {
         final systemLanguage = systemLocale.languageCode;
 
         // 지원하는 언어인지 확인
-        const supportedLanguages = ['en', 'ko', 'ja', 'vi', 'tr'];
+        const supportedLanguages = ['en', 'vi', 'ko'];
         if (supportedLanguages.contains(systemLanguage)) {
           state = systemLanguage;
           await _saveLanguage(systemLanguage);
@@ -55,12 +55,8 @@ class LanguageNotifier extends StateNotifier<String> {
     switch (state) {
       case 'ko':
         return '한국어';
-      case 'ja':
-        return '日本語';
       case 'vi':
         return 'Tiếng Việt';
-      case 'tr':
-        return 'Türkçe';
       case 'en':
       default:
         return 'English';

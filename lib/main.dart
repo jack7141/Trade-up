@@ -58,10 +58,8 @@ class _TradeUpAppState extends ConsumerState<TradeUpApp> {
       ],
       supportedLocales: const [
         Locale('en'), // English
-        Locale('ko'), // Korean
-        Locale('ja'), // Japanese
         Locale('vi'), // Vietnamese
-        Locale('tr'), // Turkish
+        Locale('ko'), // Korean
       ],
       locale: Locale(currentLanguage),
     );
